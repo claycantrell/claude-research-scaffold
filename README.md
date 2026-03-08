@@ -18,6 +18,17 @@ As AI systems rapidly surpass human cognitive capabilities, pharmaceutical and c
 └── outline.md           # Living table of contents
 ```
 
+## Research Tools
+
+All CLI-based, no GUI required. See [tools-setup.md](tools-setup.md) for install & usage.
+
+| Tool | What it does | Install |
+|------|-------------|---------|
+| [`semantic_bibtool`](https://github.com/rdyro/semantic_bibtool) | Search 200M+ papers, export BibTeX | `pip install semantic_bibtool` |
+| [`semanticscholar`](https://github.com/danielnsilva/semanticscholar) | Python API for deeper Semantic Scholar queries | `pip install semanticscholar` |
+| [`scite-cli`](https://github.com/OpenDevEd/scite-cli) | Check if papers are supported/contradicted | Clone + `npm run setup` |
+| [`papis`](https://github.com/papis/papis) | CLI reference/bibliography manager (stores as plain YAML + PDFs) | `pip install papis` |
+
 ## Status
 
 **Stage:** Research & Source Collection
