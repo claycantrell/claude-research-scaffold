@@ -211,6 +211,31 @@ Once Claude Code is running inside this project, you can say things like:
 
 ---
 
+## How Research Becomes Writing
+
+Research papers don't go from "I found some papers" to "here's a polished manuscript" in one step. This scaffold breaks the process into three layers, and Claude manages the flow between them:
+
+    notes/  →  drafts/  →  manuscript/
+
+**1. Reading Notes (`notes/`)** — When you find and read a paper, Claude automatically creates a reading note. This is objective: what does the paper say? Key findings, methodology, data points, direct quotes with page numbers. One file per paper. You don't need to ask for this — it happens whenever Claude downloads or summarizes a source.
+
+**2. Section Drafts (`drafts/`)** — This is where the real thinking happens. After you've collected a few papers on a topic, you and Claude talk through how they fit together. How does Paper A's finding connect to Paper B's result? What argument do they support? What's the logical chain? What evidence is still missing?
+
+Once you agree on how the pieces fit, Claude saves a working draft in `drafts/` — one file per section of your paper. Each draft contains:
+- **Argument** — what this section is trying to say in 2-3 sentences
+- **Evidence Bridge** — the numbered logical chain connecting your sources to your argument (this is the most valuable part — it captures your *reasoning*)
+- **Evidence Log** — direct quotes, page numbers, exact data points, and specific tables/figures from each paper. Everything is traceable — you should be able to find any claim in the original source in under 30 seconds
+- **Gaps** — what evidence you still need to find
+- **Draft Prose** — rough paragraphs with citations that you'll eventually polish and move to the manuscript
+
+**Important:** Claude will *not* write section drafts without your input. Reading notes are objective and get created automatically. But section drafts are *your* argument, *your* interpretation of what the evidence means. Claude will discuss how the papers connect, propose an evidence chain, and then ask: "Want me to save this as a working draft?" You decide.
+
+**3. Manuscript (`manuscript/main.md`)** — The polished final paper. When a section draft is solid, you move it here, clean it up, and it becomes part of the finished work.
+
+**Why this matters:** The biggest risk in research is losing the *reasoning* — you read five papers, see how they connect, have an insight about your argument... and then forget it by next week. The `drafts/` folder captures that reasoning while it's fresh. The evidence log means you never have to re-read a paper just to find where a number came from.
+
+---
+
 ## How Citations Work
 
 You write your paper in plain text. When you want to cite a source, you (or Claude) put its reference key in brackets:
