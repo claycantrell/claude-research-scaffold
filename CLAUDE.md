@@ -112,12 +112,23 @@ Use these via `Bash` tool. They are the primary interface to the research toolki
 3. Ask if they want to download any of them
 4. If yes, use `make fetch-doi` or `make fetch-arxiv` to download
 5. Then `make add-paper DOI="..."` to add to the library
+6. **Automatically read and create notes** — after downloading, extract the text, summarize the paper, and create a reading note in `notes/` (see next playbook). Don't wait for the user to ask separately.
 
 ### When the user asks you to read/summarize a paper:
 1. Use `make extract-text PDF="sources/filename.pdf"` to get the text
-2. Read the extracted text directly and provide your own summary — you are already an AI that can summarize better than a separate tool
-3. Offer to create a reading note: `make new-note TITLE="..."`
-4. Fill in the note with summary, key findings, methodology, relevance
+2. Read the extracted text directly and provide your own summary
+3. **Always create a reading note automatically.** Don't just offer — do it. Create a file in `notes/` using this naming convention: `YYYY-MM-DD-authorlastname-year---short-title.md` (e.g., `2026-03-08-smith-2024---cognitive-offloading.md`)
+4. Use the YAML frontmatter format for the note:
+   ```
+   ---
+   title: "Author Year - Short Title"
+   date: YYYY-MM-DD
+   tags: [relevant, topic, tags]
+   doi: "10.xxxx/..."
+   ---
+   ```
+5. Fill in all sections: Summary, Key Findings, Methodology, Relevance to This Work, Questions & Follow-ups, and a key citation quote the user can copy-paste into their manuscript
+6. Tell the user: "I've saved a reading note in `notes/` — you can see it in your file tree."
 
 ### When the user wants to verify a source:
 1. Run `make verify DOI="..."` to check citation support/contradiction
