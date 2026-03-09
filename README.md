@@ -65,36 +65,33 @@ The first time you run this, Claude will ask you to create an account. You have 
 
 A browser window will pop open — log in there, then come back to the terminal. Once you see Claude talking to you, you're in. Type `/exit` to close it for now.
 
-### Step 3: Get Your Copy of This Project
+### Step 3: Let Claude Set Up Everything Else
 
-You'll need a **GitHub account** (free) — sign up at [github.com](https://github.com) if you don't have one.
-
-Then paste these commands into your terminal one at a time, pressing Enter after each:
-
-    brew install gh
-
-*(If you're on Linux, use `sudo apt install gh` instead.)*
-
-    gh auth login
-
-*(Follow the prompts — it will ask you to log in through your browser, just like Claude did.)*
-
-    gh repo fork claycantrell/research-scaffold --clone
-    cd research-scaffold
-
-### Step 4: Start Claude in Your Project
+Start Claude back up:
 
     claude
 
-That's it — you're talking to your research assistant now. Say:
+Now just tell it what you need. Claude will handle the rest — installing tools, creating accounts, downloading software. You just answer its questions.
+
+**To get your copy of this project,** say:
+
+> "I need a GitHub account and I want to fork the research-scaffold project from claycantrell. Walk me through it."
+
+Claude will install what's needed, open browser windows for you to log in, and get your own copy of the project. When it's done, it will tell you to type something like `cd research-scaffold` — just do what it says.
+
+Then start Claude again inside your project:
+
+    claude
+
+**To install the research tools,** say:
 
 > "I'm new here. Help me get set up."
 
-Claude will:
-- Install all the research tools for you (`./setup.sh`)
-- Offer to set up **VS Code** if you want a visual workspace (recommended — you'll see your files and Claude side by side)
-- Walk you through optional API keys for better search results
-- Help you fill in your research outline
+**To set up a visual workspace** (so you can see your files and writing side by side with Claude), say:
+
+> "Set up VS Code for me so I can see my files while we work."
+
+Claude will download VS Code if you don't have it, open your project in it, and install the right extensions. This is optional but recommended.
 
 ### Your Workspace (if you set up VS Code)
 

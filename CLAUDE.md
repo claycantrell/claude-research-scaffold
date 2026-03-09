@@ -178,18 +178,43 @@ If the user is working in **terminal only** (no VS Code), show file contents inl
 
 ## First-Time Setup Help
 
-When a user first opens this project and talks to you, they may need help getting oriented. Follow this sequence:
+The user may have ZERO technical experience. They are following a README that tells them to just talk to you. Be ready to do everything for them.
 
-1. **Check if setup has been run.** Run `make check` to see if tools are installed. If not, run `./setup.sh` for them.
-2. **Offer to set up VS Code.** Ask: "Would you like me to set up VS Code so you can see your files alongside our conversation? It's free and makes things easier, but it's optional." If yes:
-   - Check if `code` command exists. If not, guide them to download VS Code from https://code.visualstudio.com/ and install the `code` command (on Mac: open VS Code → Cmd+Shift+P → "Shell Command: Install 'code' command").
-   - Run `code .` to open the project.
-   - Tell them to click "Install All" when VS Code suggests extensions.
-   - Explain the layout: files on the left, document in the center, Claude in the bottom terminal.
+### When the user asks to set up the GitHub project (before they have it cloned)
+
+The user may say something like: "I need a GitHub account and I want to fork the research-scaffold project."
+
+1. **Install the GitHub CLI if needed.** Check if `gh` is installed (`which gh`). If not:
+   - Mac: `brew install gh` (check if `brew` exists first; if not, install Homebrew: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`)
+   - Linux: `sudo apt install gh`
+2. **Log them into GitHub.** Run `gh auth login` and walk them through it. Say: "A browser window is going to open — log in to GitHub there, then come back here."
+3. **Fork and clone the project.** Run `gh repo fork claycantrell/research-scaffold --clone`.
+4. **Tell them what to do next.** Say: "Your project is ready! Now type these two things, one at a time:" and show them:
+   - `cd research-scaffold`
+   - `claude`
+   - Explain: "That will start me up inside your project so I can help you with everything else."
+
+### When the user says "I'm new here" or "Help me get set up"
+
+1. **Run the setup script.** Run `./setup.sh` to install all research tools. Tell the user: "I'm installing all the research tools — this takes a few minutes. Just sit tight."
+2. **Verify tools are installed.** Run `make check` to confirm everything worked.
 3. **Help them fill in outline.md.** Ask about their research topic and help them draft the outline.
 4. **Help them set up API keys.** Walk them through editing `.env` if they want better search results.
-5. **Explain the workspace.** If they seem confused, briefly explain: "Your project has folders for your manuscript, sources, notes, and bibliography. I can help you with all of them — just tell me what you need."
+5. **Explain the workspace.** Say: "Your project has folders for your manuscript, sources, notes, and bibliography. I can help you with all of them — just tell me what you need."
 6. **Save a first snapshot.** After initial setup is done, save their work (see "Saving Work" section below).
+
+### When the user asks to set up VS Code
+
+The user may say: "Set up VS Code for me" or "I want to see my files while we work."
+
+1. **Check if VS Code is installed.** Run `which code`.
+2. **If not installed:**
+   - Tell the user: "I need you to do one thing — download VS Code from https://code.visualstudio.com/ and install it. It's free. Once it's installed, come back and tell me."
+   - After they confirm, help them enable the `code` command: "Open VS Code, press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Linux), type 'Shell Command', and click 'Install code command in PATH'. Then come back here."
+3. **Once `code` command works:**
+   - Run `code .` to open the project in VS Code.
+   - Tell them: "VS Code just opened. You should see a popup asking to install some recommended extensions — click 'Install All'. Those give you a better experience for writing and reading PDFs."
+   - Explain the layout: "On the left you'll see your project folders. In the center is whatever file you're reading or writing. And at the bottom is where you talk to me. You can keep working with me in either this terminal or the one inside VS Code — both work the same."
 
 ## Saving Work (Git) — CRITICAL
 
