@@ -75,23 +75,23 @@ Now just tell it what you need. Claude will handle the rest — installing tools
 
 **To get your copy of this project,** say:
 
-> "I need a GitHub account and I want to fork the research-scaffold project from claycantrell. Walk me through it."
+> "I don't have a GitHub account yet. I need you to install the GitHub CLI, help me create an account and log in, then fork and clone the research-scaffold project from claycantrell on GitHub. Walk me through each step and tell me exactly what to do."
 
-Claude will install what's needed, open browser windows for you to log in, and get your own copy of the project. When it's done, it will tell you to type something like `cd research-scaffold` — just do what it says.
+*(If you already have a GitHub account, just say: "Install the GitHub CLI, log me into GitHub, and fork and clone claycantrell/research-scaffold.")*
 
-Then start Claude again inside your project:
+Claude will do the work and tell you what to type when it needs you. When it's done, it will say something like "type `cd research-scaffold`" — do what it says, then start Claude again:
 
     claude
 
 **To install the research tools,** say:
 
-> "I'm new here. Help me get set up."
+> "Run the setup script to install all the research tools for this project. Then verify everything is working."
 
 **To set up a visual workspace** (so you can see your files and writing side by side with Claude), say:
 
-> "Set up VS Code for me so I can see my files while we work."
+> "Download and install VS Code if I don't have it, open this project in it, and install all the recommended extensions. Then explain the layout to me."
 
-Claude will download VS Code if you don't have it, open your project in it, and install the right extensions. This is optional but recommended.
+This is optional but recommended — it lets you see your paper, sources, and notes while you talk to Claude.
 
 ### Your Workspace (if you set up VS Code)
 
