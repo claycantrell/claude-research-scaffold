@@ -218,6 +218,49 @@ When a user first opens this project and talks to you:
 4. **Initialize progress.md.** Update the checklist to match the sections in their outline.
 5. **Help them set up API keys.** Walk them through editing `.env` if they want better search results.
 6. **Explain the workspace.** If they seem confused, briefly explain: "Your project has folders for your manuscript, sources, notes, and bibliography. I can help you with all of them — just tell me what you need."
+
+## When Tools Aren't Installed
+
+The user will NOT know how to install things. If a command fails because a tool is missing, **fix it for them.** Don't just say "you need to install X" — actually install it.
+
+### First, try the setup script
+Run `./setup.sh` — it installs everything. If the user hasn't run it yet, this is the fix for most problems.
+
+### If setup.sh itself fails, or a specific tool is still missing after setup:
+
+**Figure out what's missing and install it.** Check the platform and use the right approach:
+
+- **Mac (Homebrew):** Check if `brew` exists (`which brew`). If not, install it first:
+  `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+  Then `brew install <tool>`.
+- **Linux (apt):** `sudo apt update && sudo apt install <tool>`
+- **Python packages:** `pip3 install <package>` or `pip3 install -r requirements.txt`
+- **Node packages:** `npm install -g <package>`
+
+### Common issues and fixes:
+
+| Error | What's missing | Fix |
+|-------|---------------|-----|
+| `make: command not found` | Build tools | Mac: `xcode-select --install`. Linux: `sudo apt install build-essential` |
+| `python3: command not found` | Python | Mac: `brew install python3`. Linux: `sudo apt install python3` |
+| `node: command not found` or `npm: command not found` | Node.js | Mac: `brew install node`. Linux: `sudo apt install nodejs npm` |
+| `pandoc: command not found` | Pandoc (builds PDFs/DOCX) | Mac: `brew install pandoc`. Linux: `sudo apt install pandoc` |
+| `pdftotext: command not found` | Poppler (reads PDFs) | Mac: `brew install poppler`. Linux: `sudo apt install poppler-utils` |
+| `vale: command not found` | Vale (writing style checker) | Mac: `brew install vale`. Linux: `brew install vale` or download from GitHub |
+| `papis: command not found` | Papis (reference manager) | `pip3 install papis` |
+| `semanticscholar module not found` | Python search library | `pip3 install semanticscholar` |
+| `ModuleNotFoundError: No module named 'pyalex'` | OpenAlex search library | `pip3 install pyalex` |
+| Any `pip` package missing | Python dependency | `pip3 install -r requirements.txt` |
+| `brew: command not found` (Mac) | Homebrew package manager | `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` |
+
+### General approach when something breaks:
+1. Read the error message — it usually says what's missing
+2. Install the missing thing using the appropriate method above
+3. Re-run the command that failed
+4. If you're not sure what to do, run `./setup.sh` again — it's safe to re-run
+5. Tell the user what happened in plain language: "One of the research tools wasn't installed yet. I just fixed it — you're good to go."
+
+**Never leave the user stuck.** If you truly can't fix it, explain what went wrong and suggest they say: "Something seems broken, can you check my setup?"
 7. **Save a first snapshot.** After initial setup is done, save their work (see "Saving Work" section below).
 
 ## Saving Work (Git) — CRITICAL
