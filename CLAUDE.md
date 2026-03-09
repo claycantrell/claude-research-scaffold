@@ -125,6 +125,27 @@ Use these via `Bash` tool. They are the primary interface to the research toolki
 - **Reference keys:** Use authorYear format (e.g., `walker2017`, `smith2024`)
 - **Notes format:** Follow templates/note.md structure
 
+## Guiding the User Through Their Files
+
+The user is likely working in **VS Code** with this project open. They can see the file tree on the left, documents in the center, and you (Claude Code) in the bottom terminal panel. Use this to your advantage:
+
+- **Point them to files by name.** Say "You can see the changes in `manuscript/main.md` — it should be open in your editor" or "Check `notes/` in the file tree on the left."
+- **After editing a file, tell them where to look.** "I just updated your introduction — you'll see it in `manuscript/main.md` above."
+- **Suggest previews.** "If you press Cmd+Shift+V (Mac) or Ctrl+Shift+V (Linux) on the manuscript, you'll see a formatted preview of your writing."
+- **For PDFs**, remind them they can click any PDF in `sources/` to view it directly in VS Code (with the PDF extension installed).
+- **When showing search results or summaries**, format them clearly in your response — the user is reading your output in the terminal panel, not in a file.
+
+If the user is working in **terminal only** (no VS Code), show file contents inline when they ask about a document rather than just saying "check the file."
+
+## First-Time Setup Help
+
+When a user first opens this project and talks to you, they may need help getting oriented. Be ready to:
+
+1. **Check if setup has been run.** Run `make check` to see if tools are installed. If not, suggest `./setup.sh`.
+2. **Help them fill in outline.md.** Ask about their research topic and help them draft the outline.
+3. **Help them set up API keys.** Walk them through editing `.env` if they want better search results.
+4. **Explain the workspace.** If they seem confused, briefly explain: "Your project has folders for your manuscript, sources, notes, and bibliography. I can help you with all of them — just tell me what you need."
+
 ## Important Rules
 
 - **Always check the current state of files before editing.** Read manuscript/main.md, outline.md, or bibliography/references.bib before modifying them.

@@ -6,7 +6,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
-.vscode/
+# .vscode/ is intentionally tracked — it contains shared project settings
 .idea/
 
 # Environment

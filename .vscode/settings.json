@@ -1,0 +1,32 @@
+{
+  "files.associations": {
+    "*.md": "markdown"
+  },
+  "editor.wordWrap": "on",
+  "editor.fontSize": 14,
+  "editor.lineHeight": 1.8,
+  "editor.minimap.enabled": false,
+  "markdown.preview.fontSize": 14,
+  "markdown.preview.lineHeight": 1.8,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "output/**": false
+  },
+  "search.exclude": {
+    "bibliography/citation-style.csl": true,
+    "output/**": true
+  },
+  "editor.quickSuggestions": {
+    "markdown": false
+  },
+  "cSpell.words": [
+    "bibtex",
+    "citeproc",
+    "pandoc",
+    "papis",
+    "arxiv",
+    "zettelkasten"
+  ]
+}

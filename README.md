@@ -31,12 +31,13 @@ You don't need to memorize commands or learn software. You just talk to Claude.
 ### What You'll Need
 
 1. **A Mac or Linux computer** (Windows users can use [WSL](https://learn.microsoft.com/en-us/windows/wsl/install))
-2. **Claude Code** — Anthropic's command-line AI assistant. Install it:
+2. **VS Code** (free) — download from [code.visualstudio.com](https://code.visualstudio.com/). This is your workspace where you'll see your files and talk to Claude side by side.
+3. **Claude Code** — Anthropic's AI assistant. Install it:
    ```bash
    npm install -g @anthropic-ai/claude-code
    ```
    (You'll need [Node.js](https://nodejs.org/) installed first. If you don't have it, download it from that link.)
-3. **A GitHub account** (free) — sign up at [github.com](https://github.com) if you don't have one
+4. **A GitHub account** (free) — sign up at [github.com](https://github.com) if you don't have one
 
 ### Setup (5 minutes)
 
@@ -48,15 +49,64 @@ cd research-scaffold
 # 2. Install the research tools
 ./setup.sh
 
-# 3. Start Claude Code
+# 3. Open the project in VS Code
+code .
+```
+
+When VS Code opens, it will suggest installing a few helpful extensions (Claude Code, Markdown preview, PDF viewer, spell checker). **Click "Install All"** — these make the experience much better.
+
+### Your Workspace
+
+Once VS Code is open with the extensions installed, here's what you'll see:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  FILE TREE (left)    │  YOUR DOCUMENT (center)          │
+│                      │                                   │
+│  > manuscript/       │  # Introduction                   │
+│  > sources/          │                                   │
+│  > notes/            │  Studies have shown that sleep     │
+│  > bibliography/     │  deprivation impacts memory        │
+│  > library/          │  consolidation [@walker2017]...    │
+│    outline.md        │                                   │
+│                      │                                   │
+│                      ├───────────────────────────────────│
+│                      │  CLAUDE CODE (bottom panel)       │
+│                      │                                   │
+│                      │  You: Find me papers about sleep  │
+│                      │       and memory consolidation    │
+│                      │                                   │
+│                      │  Claude: I found 10 papers...     │
+│                      │                                   │
+└─────────────────────────────────────────────────────────┘
+```
+
+- **Left panel** — your project folders. Click any file to open it.
+- **Center** — whatever document you're reading or writing. You can preview Markdown formatted (Cmd+Shift+V on Mac) and view PDFs directly.
+- **Bottom panel** — Claude Code. This is where you talk to your research assistant.
+
+To start Claude Code in the terminal panel, click **Terminal > New Terminal** in VS Code's menu bar, then type:
+
+```bash
 claude
 ```
 
-That's it. You're now talking to your research assistant. Try saying:
+Now just start talking. Try:
 
 > "I'm researching the effects of sleep deprivation on memory. Help me find papers."
 
-Claude will search for papers, show you the results, and ask what you'd like to do next.
+Claude will search for papers, show you the results, and ask what you'd like to do next. When it edits files, you'll see the changes appear live in the editor above.
+
+### Alternative: Terminal Only
+
+If you prefer not to use VS Code, Claude Code works fine on its own in any terminal:
+
+```bash
+cd research-scaffold
+claude
+```
+
+You can still do everything — Claude will show you file contents when you ask and edit files when needed. You just won't have the visual file browser and live preview alongside it.
 
 ---
 
