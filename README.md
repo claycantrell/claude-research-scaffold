@@ -363,6 +363,26 @@ Claude uses 20+ free CLI tools to do the work. You don't need to know about them
 
 ---
 
+## Important Things to Know
+
+Claude Code is an **AI agent** — it reads files, runs commands, and makes changes on your computer on your behalf. That's what makes it powerful, but it comes with things you should be aware of:
+
+**Claude makes mistakes.** It's an AI, not a human expert. It may summarize a paper incorrectly, cite the wrong source, or write something that sounds confident but is factually wrong. **Always read what Claude writes before you publish it.** This is your research — Claude is a fast assistant, not a co-author.
+
+**Review your writing carefully.** Claude can draft entire sections in seconds, but that doesn't mean the output is ready to submit. Check facts, verify quotes, and make sure arguments actually make sense. AI-generated text can be fluent but shallow.
+
+**Claude runs commands on your computer.** When you ask it to install tools, download files, or set things up, it's executing real commands in your terminal. This project is designed so those commands are safe, but you should know it's happening. Claude will ask for permission before doing anything unusual.
+
+**It costs money.** Claude Code uses the Anthropic API, which charges based on how much you use it. Short conversations are cheap (pennies). Long sessions with lots of file reading and searching can add up. Keep an eye on your usage at [console.anthropic.com](https://console.anthropic.com). If you have a Claude Pro or Max subscription, usage may be included — check your plan.
+
+**Your data stays on your computer.** PDFs, notes, and your manuscript stay in your local project folder. However, the text of your conversations with Claude (including any file contents Claude reads) is sent to Anthropic's servers for processing. Don't feed it anything you're not comfortable with a third party seeing — unpublished proprietary data, confidential patient records, classified material, etc.
+
+**Save your work often.** Tell Claude "save my progress" regularly. If something goes wrong — a bad edit, an accidental deletion — you can always go back to a previous snapshot. Claude is instructed to offer saves automatically, but don't rely on that entirely.
+
+**AI is not a substitute for peer review.** Claude can check grammar, find sources, and draft text, but it cannot replace the judgment of human experts in your field. Use it to accelerate your work, not to bypass the scholarly process.
+
+---
+
 ## Frequently Asked Questions
 
 **Do I need to know how to code?**
