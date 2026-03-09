@@ -28,36 +28,59 @@ You don't need to memorize commands or learn software. You just talk to Claude.
 
 ## Getting Started
 
-### What You'll Need
+### Step 1: Install Claude Code
 
-1. **A Mac or Linux computer** (Windows users can use [WSL](https://learn.microsoft.com/en-us/windows/wsl/install))
-2. **VS Code** (free) — download from [code.visualstudio.com](https://code.visualstudio.com/). This is your workspace where you'll see your files and talk to Claude side by side.
-3. **Claude Code** — Anthropic's AI assistant. Install it:
+You need two things on your computer. Open your **Terminal** app (on Mac, search for "Terminal" in Spotlight):
+
+1. **Install Node.js** — download from [nodejs.org](https://nodejs.org/) and run the installer. This is a one-time thing that Claude Code needs to run.
+
+2. **Install Claude Code** — paste this into your terminal and press Enter:
    ```bash
    npm install -g @anthropic-ai/claude-code
    ```
-   (You'll need [Node.js](https://nodejs.org/) installed first. If you don't have it, download it from that link.)
-4. **A GitHub account** (free) — sign up at [github.com](https://github.com) if you don't have one
 
-### Setup (5 minutes)
+That's it. Claude Code is your AI research assistant. Everything else, Claude can set up for you.
+
+### Step 2: Get Your Copy of This Project
+
+You'll need a **GitHub account** (free) — sign up at [github.com](https://github.com) if you don't have one.
+
+Then paste these commands into your terminal:
 
 ```bash
-# 1. Get your own copy of this project
+# Install the GitHub CLI (if you don't have it)
+# Mac:
+brew install gh
+# Linux:
+sudo apt install gh
+
+# Log in to GitHub
+gh auth login
+
+# Get your own copy of this project
 gh repo fork claycantrell/research-scaffold --clone
 cd research-scaffold
-
-# 2. Install the research tools
-./setup.sh
-
-# 3. Open the project in VS Code
-code .
 ```
 
-When VS Code opens, it will suggest installing a few helpful extensions (Claude Code, Markdown preview, PDF viewer, spell checker). **Click "Install All"** — these make the experience much better.
+### Step 3: Start Claude
 
-### Your Workspace
+```bash
+claude
+```
 
-Once VS Code is open with the extensions installed, here's what you'll see:
+That's it — you're talking to your research assistant now. Say:
+
+> "I'm new here. Help me get set up."
+
+Claude will:
+- Install all the research tools for you (`./setup.sh`)
+- Offer to set up **VS Code** if you want a visual workspace (recommended — you'll see your files and Claude side by side)
+- Walk you through optional API keys for better search results
+- Help you fill in your research outline
+
+### Your Workspace (if you set up VS Code)
+
+If Claude sets up VS Code for you, here's what you'll see:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -82,31 +105,19 @@ Once VS Code is open with the extensions installed, here's what you'll see:
 ```
 
 - **Left panel** — your project folders. Click any file to open it.
-- **Center** — whatever document you're reading or writing. You can preview Markdown formatted (Cmd+Shift+V on Mac) and view PDFs directly.
+- **Center** — whatever document you're reading or writing.
 - **Bottom panel** — Claude Code. This is where you talk to your research assistant.
 
-To start Claude Code in the terminal panel, click **Terminal > New Terminal** in VS Code's menu bar, then type:
+You don't have to use VS Code. Claude works fine in any terminal window. But VS Code lets you see your files updating live as Claude works, which is nice.
 
-```bash
-claude
-```
+### Saving Your Work
 
-Now just start talking. Try:
+This project automatically tracks every change you make — think of it as an **infinite undo button**. Here's all you need to know:
 
-> "I'm researching the effects of sleep deprivation on memory. Help me find papers."
-
-Claude will search for papers, show you the results, and ask what you'd like to do next. When it edits files, you'll see the changes appear live in the editor above.
-
-### Alternative: Terminal Only
-
-If you prefer not to use VS Code, Claude Code works fine on its own in any terminal:
-
-```bash
-cd research-scaffold
-claude
-```
-
-You can still do everything — Claude will show you file contents when you ask and edit files when needed. You just won't have the visual file browser and live preview alongside it.
+- **Claude saves your work for you.** After you make progress (finish a section, add a batch of sources, etc.), Claude will offer to save a snapshot. Just say yes.
+- **You can always go back.** If something goes wrong, tell Claude: *"Undo my last changes"* or *"Go back to how things were yesterday."* Nothing is ever permanently lost.
+- **Your work is backed up online.** Claude can push your saved snapshots to GitHub, so even if your computer dies, your research is safe. Just say: *"Back up my work."*
+- **You don't need to understand Git.** Claude handles all of that behind the scenes. If you're curious, "saving a snapshot" is called a "commit" and "backing up online" is called a "push" — but you never need to type those words.
 
 ---
 

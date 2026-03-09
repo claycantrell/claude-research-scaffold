@@ -178,12 +178,101 @@ If the user is working in **terminal only** (no VS Code), show file contents inl
 
 ## First-Time Setup Help
 
-When a user first opens this project and talks to you, they may need help getting oriented. Be ready to:
+When a user first opens this project and talks to you, they may need help getting oriented. Follow this sequence:
 
-1. **Check if setup has been run.** Run `make check` to see if tools are installed. If not, suggest `./setup.sh`.
-2. **Help them fill in outline.md.** Ask about their research topic and help them draft the outline.
-3. **Help them set up API keys.** Walk them through editing `.env` if they want better search results.
-4. **Explain the workspace.** If they seem confused, briefly explain: "Your project has folders for your manuscript, sources, notes, and bibliography. I can help you with all of them — just tell me what you need."
+1. **Check if setup has been run.** Run `make check` to see if tools are installed. If not, run `./setup.sh` for them.
+2. **Offer to set up VS Code.** Ask: "Would you like me to set up VS Code so you can see your files alongside our conversation? It's free and makes things easier, but it's optional." If yes:
+   - Check if `code` command exists. If not, guide them to download VS Code from https://code.visualstudio.com/ and install the `code` command (on Mac: open VS Code → Cmd+Shift+P → "Shell Command: Install 'code' command").
+   - Run `code .` to open the project.
+   - Tell them to click "Install All" when VS Code suggests extensions.
+   - Explain the layout: files on the left, document in the center, Claude in the bottom terminal.
+3. **Help them fill in outline.md.** Ask about their research topic and help them draft the outline.
+4. **Help them set up API keys.** Walk them through editing `.env` if they want better search results.
+5. **Explain the workspace.** If they seem confused, briefly explain: "Your project has folders for your manuscript, sources, notes, and bibliography. I can help you with all of them — just tell me what you need."
+6. **Save a first snapshot.** After initial setup is done, save their work (see "Saving Work" section below).
+
+## Saving Work (Git) — CRITICAL
+
+**The user likely has ZERO knowledge of Git.** They think in terms of "saving a file" and "backing up." Your job is to protect their work at all times without making them learn Git. Use plain language: "snapshot" instead of "commit," "back up" instead of "push," "undo" instead of "revert."
+
+### Core Principles
+
+1. **Save early and often.** After any meaningful progress — a section drafted, sources added, notes written, outline updated — offer to save a snapshot. Say something like: "Nice work on that section! Want me to save a snapshot of your progress?" Don't wait for them to ask.
+
+2. **NEVER run destructive Git commands.** The following are FORBIDDEN unless the user explicitly asks AND you explain what will happen first:
+   - `git reset --hard` (destroys unsaved changes — NEVER use this)
+   - `git push --force` (can overwrite backed-up work — NEVER use this)
+   - `git checkout .` or `git restore .` (erases all changes since last snapshot)
+   - `git clean -f` (permanently deletes files)
+   - `git branch -D` (deletes a branch permanently)
+   - `git rebase` (rewrites history — avoid entirely for this user)
+
+3. **Always save before doing anything risky.** Before switching branches, pulling updates, or making large changes, ALWAYS save a snapshot of the current state first. Tell the user: "Let me save your current work before I do this, just to be safe."
+
+4. **When the user says "undo" or "go back":**
+   - First, understand what they want to undo — the last edit? The last few changes? Go back to yesterday?
+   - For undoing recent unsaved edits: `git diff` to see what changed, then `git checkout -- <specific file>` to undo just that file. NEVER `git checkout .` (which undoes everything).
+   - For going back to a previous snapshot: use `git log --oneline` to find it, then `git show <hash>:<file>` to view old versions. Create a new file with the old content rather than rewriting history.
+   - ALWAYS confirm with the user before undoing anything: "I can undo the changes to your introduction. Your notes and sources won't be affected. Want me to go ahead?"
+
+5. **When the user says "back up" or "save to the cloud":**
+   - Save a snapshot first (commit), then push to GitHub.
+   - Say: "Your work is now backed up to GitHub. Even if something happens to your computer, everything is safe online."
+
+### How to Save a Snapshot
+
+```bash
+# 1. See what's changed
+git status
+git diff
+
+# 2. Add the changed files (be specific — never use git add -A or git add .)
+git add manuscript/main.md notes/new-note.md bibliography/references.bib
+
+# 3. Save the snapshot with a description
+git commit -m "Draft introduction and add 3 source papers"
+
+# 4. Tell the user
+# "I've saved a snapshot of your progress: 'Draft introduction and add 3 source papers'"
+```
+
+### How to Back Up to GitHub
+
+```bash
+git push
+# "Your work is backed up online. You're all set."
+```
+
+### What to Say (and Not Say)
+
+| Instead of... | Say... |
+|--------------|--------|
+| "Let me commit your changes" | "Let me save a snapshot of your progress" |
+| "I'll push to origin" | "I'll back up your work to GitHub" |
+| "There are uncommitted changes" | "You have unsaved work — want me to save it?" |
+| "Let me checkout that branch" | "Let me switch to a different version" |
+| "There's a merge conflict" | "Two versions of the same section got edited differently. Let me help you pick which changes to keep." |
+| "I'll revert that commit" | "I'll undo those changes and save a new snapshot" |
+| "Your working tree is dirty" | "You have some unsaved edits" |
+
+### When to Save (Offer Every Time)
+
+- After drafting or editing a section of the manuscript
+- After adding new sources to the library
+- After creating or updating reading notes
+- After changing the outline
+- After modifying the bibliography
+- Before and after any bulk operation (e.g., "download 5 papers")
+- At the end of a work session (if you sense the user is wrapping up)
+- Before doing anything that changes multiple files at once
+
+### Protecting Against Disasters
+
+- **If the user asks to delete files:** Confirm exactly which files, explain what will happen, and save a snapshot BEFORE deleting anything. "I'll save a snapshot first so we can get these back if you change your mind."
+- **If a command fails or something looks wrong:** Don't panic. Run `git status` and `git log --oneline -5` to see the state. Almost everything is recoverable.
+- **If the user somehow gets into a bad state:** Run `git stash` to safely set aside any unsaved work, fix the issue, then `git stash pop` to bring their work back. Explain: "I've set your changes aside temporarily while I fix something — don't worry, nothing is lost."
+- **NEVER amend a commit that has been pushed.** This can cause the user's backup to get out of sync.
+- **If there are conflicts when pulling:** Don't auto-resolve. Show the user both versions and ask which one they want to keep.
 
 ## Important Rules
 
@@ -191,6 +280,7 @@ When a user first opens this project and talks to you, they may need help gettin
 - **Use make commands** rather than calling tools directly when a make target exists.
 - **Keep bibliography/references.bib in sync.** After adding papers via papis, run `make bib` to regenerate.
 - **Don't put temporary analysis in the manuscript.** Use scratch/ or notes/ for working material.
-- **Commit meaningful progress.** When the user completes a milestone (new section drafted, batch of sources added), offer to commit with a descriptive message.
+- **Save snapshots at milestones.** When the user completes a milestone (new section drafted, batch of sources added), offer to save a snapshot with a clear description.
 - **Be proactive.** If you notice the outline mentions a section that doesn't exist in the manuscript yet, mention it. If a citation key in the manuscript doesn't match the bibliography, flag it.
 - **Speak in plain language.** The user may not know what BibTeX, DOI, or Pandoc mean. Translate jargon into clear explanations when needed.
+- **Protect the user's work above all else.** When in doubt, save a snapshot first. Never run a command that could destroy work without confirming. Treat every file in this project as precious.
