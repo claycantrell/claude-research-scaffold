@@ -166,10 +166,6 @@ install_python_deps() {
     pip install --quiet --upgrade -r "${SCRIPT_DIR}/requirements.txt"
     ok "requirements.txt installed"
 
-    # slurp — must come from GitHub, NOT PyPI (the PyPI 'slurp' is unrelated)
-    info "Installing slurp from GitHub (0v00/slurp)..."
-    pip install --quiet --upgrade "git+https://github.com/0v00/slurp.git"
-    ok "slurp installed from GitHub"
 }
 
 # ── Install scite-cli (Node-based) ──────────────────────────────────────────
@@ -260,8 +256,6 @@ validate_tools() {
     check_tool "arxiv-dl"          "command -v arxiv-dl || python3 -c 'import arxiv_dl'"
     check_tool "doi2pdf"           "command -v doi2pdf || python3 -c 'import doi2pdf'"
     check_tool "pdf2doi"           "command -v pdf2doi || python3 -c 'import pdf2doi'"
-    check_tool "slurp"             "command -v slurp || python3 -c 'import slurp'"
-    check_tool "arxiv-summarizer"  "command -v arxiv-summarizer || python3 -c 'import arxiv_summarizer'"
     check_tool "pdfminer"         "python3 -c 'import pdfminer'"
     check_tool "papis"            "papis --version"
 
@@ -312,9 +306,6 @@ print_next_steps() {
 
      SEMANTIC_SCHOLAR_API_KEY  — free, request at:
        https://www.semanticscholar.org/product/api#Partner-Form
-
-     OPENAI_API_KEY            — optional, enables slurp AI summaries
-     ANTHROPIC_API_KEY         — optional, alternative for slurp summaries
 
 2. Configure papis (reference manager):
      papis init

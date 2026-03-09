@@ -84,19 +84,15 @@ make extract-all
 
 ---
 
-## 6. Summarize and triage
+## 6. Read and triage
 
-Get a quick summary to decide if a paper is worth a deep read:
-
-```bash
-make summarize PDF="sources/paper.pdf"
-```
-
-For AI-powered summaries of recent arXiv papers:
+To decide if a paper is worth a deep read, extract the text and ask Claude to summarize it:
 
 ```bash
-slurp "cognitive augmentation" --top 5
+make extract-text PDF="sources/paper.pdf"
 ```
+
+Claude can read the extracted text directly and provide a summary — no separate summarization tool needed.
 
 ---
 
@@ -199,7 +195,6 @@ The cycle repeats. As you write, you will discover gaps:
 | Download | `make fetch-doi DOI="..."` | [02-retrieval.md](02-retrieval.md) |
 | Add to library | `make add-paper DOI="..."` | [05-reference-management.md](05-reference-management.md) |
 | Extract text | `make extract-text PDF="..."` | [04-pdf-extraction.md](04-pdf-extraction.md) |
-| Summarize | `make summarize PDF="..."` | [03-summarization.md](03-summarization.md) |
 | Verify | `make verify DOI="..."` | [03-summarization.md](03-summarization.md) |
 | New note | `make new-note TITLE="..."` | [06-note-taking.md](06-note-taking.md) |
 | Build bib | `make bib` | [05-reference-management.md](05-reference-management.md) |

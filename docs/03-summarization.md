@@ -1,93 +1,16 @@
 # Understanding Papers
 
-Tools for summarizing, ranking, and verifying academic papers.
+Tools for reading and verifying academic papers.
 
----
+## Reading and Summarizing Papers
 
-## slurp
-
-Fetch, rank, and summarize arXiv papers using AI (OpenAI or Anthropic).
-
-### Install
-
-Install from GitHub -- the PyPI package named `slurp` is an unrelated project:
+Claude can read and summarize papers directly -- no separate summarization tool is needed. Extract the text from a PDF and Claude will analyze it:
 
 ```bash
-pip install git+https://github.com/0v00/slurp.git
+make extract-text PDF="sources/paper.pdf"
 ```
 
-### API Key
-
-Requires an LLM API key for AI-powered summaries. Set one of these in `.env`:
-
-```bash
-OPENAI_API_KEY=sk-...
-# or
-ANTHROPIC_API_KEY=sk-ant-...
-```
-
-Without an API key, slurp can still fetch and rank papers but will skip AI summaries.
-
-### Examples
-
-```bash
-# Summarize recent papers on a topic
-slurp "cognitive augmentation artificial intelligence"
-
-# Limit to papers from the last 7 days
-slurp "transformer architecture" --days 7
-
-# Output as JSON for scripting
-slurp "brain-computer interfaces" --format json
-
-# Rank by relevance and summarize top 5
-slurp "nootropics cognition" --top 5
-```
-
-### How it connects
-
-- Summaries help you decide which papers to download (`make fetch-arxiv`) and import into your library (`make add-paper`).
-- Use alongside your reading notes (`make new-note`) to capture key findings before diving into full papers.
-
----
-
-## arxiv-summarizer
-
-Summarize papers using local HuggingFace models. Runs entirely offline -- no API key needed.
-
-### Install
-
-```bash
-pip install arxiv-summarizer
-```
-
-Downloads model weights on first run (may take a few minutes).
-
-### Examples
-
-```bash
-# Summarize a local PDF
-arxiv-summarizer sources/paper.pdf
-
-# Summarize by arXiv ID
-arxiv-summarizer 2301.00001
-
-# Adjust summary length
-arxiv-summarizer sources/paper.pdf --max-length 500
-```
-
-### Makefile shortcut
-
-```bash
-make summarize PDF="sources/paper.pdf"
-```
-
-Runs `arxiv-summarizer` on the given PDF and prints the summary to stdout.
-
-### How it connects
-
-- Good for quick triage: run on each PDF in `sources/` to decide which papers warrant a full reading note.
-- Output can be pasted directly into the Summary section of a note created with `make new-note`.
+Claude reads the extracted text and can provide summaries, identify key findings, assess methodology, and answer questions about the paper. This is more flexible and accurate than a standalone summarization tool since you can ask follow-up questions and get tailored analysis.
 
 ---
 

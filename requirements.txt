@@ -7,10 +7,6 @@ arxiv-dl
 doi2pdf
 pdf2doi
 
-# Summarization
-# slurp installed from GitHub in setup.sh (PyPI package is unrelated)
-arxiv-summarizer
-
 # PDF Extraction
 pdfminer.six
 

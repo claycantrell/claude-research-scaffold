@@ -79,7 +79,7 @@ Uses `curl` with an `Accept: application/pdf` header to resolve the DOI and save
 
 ### How it connects
 
-- Same as `arxiv-dl`: PDFs land in `sources/` for extraction, summarization, or library import.
+- Same as `arxiv-dl`: PDFs land in `sources/` for extraction or library import.
 - Use the DOI directly with `make add-paper DOI="..."` to register the paper in your papis library with full metadata.
 
 ---

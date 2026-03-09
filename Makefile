@@ -121,22 +121,6 @@ identify-doi: ## Extract DOI from PDF. Usage: make identify-doi PDF="sources/pap
 		echo "No DOI found in $(PDF)"
 
 # ==============================================================================
-# SUMMARIZATION
-# ==============================================================================
-
-.PHONY: summarize
-summarize: ## Summarize a paper via arxiv-summarizer. Usage: make summarize PDF="sources/paper.pdf"
-	@if [ -z "$(PDF)" ]; then \
-		echo "Error: PDF is required. Usage: make summarize PDF=\"sources/paper.pdf\""; \
-		exit 1; \
-	fi
-	@if [ ! -f "$(PDF)" ]; then \
-		echo "Error: File not found: $(PDF)"; \
-		exit 1; \
-	fi
-	arxiv-summarizer "$(PDF)"
-
-# ==============================================================================
 # CITATION VERIFICATION
 # ==============================================================================
 

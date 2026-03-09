@@ -14,7 +14,7 @@ Think of it as a **pre-organized filing cabinet for a research project** — exc
 
 - **Find papers** — "Find me recent papers about cognitive enhancement"
 - **Download them** — "Download that first one"
-- **Summarize them** — "What does this paper argue?"
+- **Understand them** — "What does this paper argue?"
 - **Verify them** — "Has this paper's findings been contradicted?"
 - **Organize your sources** — "Add this to my library"
 - **Take notes** — "Create a reading note for this paper"
@@ -160,7 +160,7 @@ Once Claude Code is running inside this project, you can say things like:
 - "I have some PDFs in my Downloads folder. Move them into this project and add them to my library."
 
 ### Reading & Understanding
-- "Summarize the paper I just downloaded"
+- "What does this paper argue?"
 - "What are the key findings in sources/smith-2024.pdf?"
 - "Has this paper's conclusions been supported by later research?"
 - "Create a reading note for this paper"
@@ -241,7 +241,7 @@ A typical session looks like this:
  2. Search       "Find papers about [subtopic]"
  3. Download     "Download the top 3 results"
  4. Catalog      "Add them to my library"
- 5. Read         "Summarize that first paper"
+ 5. Read         "What does that first paper say?"
  6. Verify       "Has this paper been contradicted by newer research?"
  7. Notes        "Create a reading note for it"
  8. Write        "Draft the literature review section"
@@ -263,10 +263,8 @@ Some search tools work better with a free API key. After setup, you'll have a `.
 | Key | What it's for | Cost | Where to get it |
 |-----|--------------|------|-----------------|
 | `SEMANTIC_SCHOLAR_API_KEY` | Faster, unlimited paper searches | Free | [semanticscholar.org](https://www.semanticscholar.org/product/api#Partner-Form) |
-| `OPENAI_API_KEY` | AI-powered paper summaries | Pay-per-use | [platform.openai.com](https://platform.openai.com) |
-| `ANTHROPIC_API_KEY` | Alternative AI summaries | Pay-per-use | [console.anthropic.com](https://console.anthropic.com) |
 
-The Semantic Scholar key is the only one that matters, and it's free.
+The Semantic Scholar key is the only one that matters, and it's free. Claude itself can summarize papers directly — no separate API key needed for that.
 
 ---
 
@@ -298,10 +296,9 @@ Everything Claude does under the hood uses `make` commands. If you prefer to run
 | Extract text from all PDFs | `make extract-all` |
 | Find a DOI in a PDF | `make identify-doi PDF="sources/paper.pdf"` |
 
-### Understanding & Verifying
+### Verifying
 | What you want to do | Command |
 |---------------------|---------|
-| Summarize a paper | `make summarize PDF="sources/paper.pdf"` |
 | Check citation support/contradiction | `make verify DOI="10.1038/s41586-020-2649-2"` |
 
 ### Organizing Sources
@@ -363,7 +360,6 @@ Claude uses 20+ free CLI tools to do the work. You don't need to know about them
 | Downloads papers from arXiv | arxiv-dl | [docs/02-retrieval.md](docs/02-retrieval.md) |
 | Downloads papers by DOI | doi2pdf | [docs/02-retrieval.md](docs/02-retrieval.md) |
 | Extracts DOIs from PDFs | pdf2doi | [docs/02-retrieval.md](docs/02-retrieval.md) |
-| Summarizes papers with AI | slurp, arxiv-summarizer | [docs/03-summarization.md](docs/03-summarization.md) |
 | Checks if findings are supported | scite-cli | [docs/03-summarization.md](docs/03-summarization.md) |
 | Extracts text from PDFs | pdftotext, pdfminer | [docs/04-pdf-extraction.md](docs/04-pdf-extraction.md) |
 | Manages your reference library | papis | [docs/05-reference-management.md](docs/05-reference-management.md) |
@@ -383,7 +379,7 @@ Claude uses 20+ free CLI tools to do the work. You don't need to know about them
 
 Claude Code is an **AI agent** — it reads files, runs commands, and makes changes on your computer on your behalf. That's what makes it powerful, but it comes with things you should be aware of:
 
-**Claude makes mistakes.** It's an AI, not a human expert. It may summarize a paper incorrectly, cite the wrong source, or write something that sounds confident but is factually wrong. **Always read what Claude writes before you publish it.** This is your research — Claude is a fast assistant, not a co-author.
+**Claude makes mistakes.** It's an AI, not a human expert. It may misinterpret a paper, cite the wrong source, or write something that sounds confident but is factually wrong. **Always read what Claude writes before you publish it.** This is your research — Claude is a fast assistant, not a co-author.
 
 **Review your writing carefully.** Claude can draft entire sections in seconds, but that doesn't mean the output is ready to submit. Check facts, verify quotes, and make sure arguments actually make sense. AI-generated text can be fluent but shallow.
 

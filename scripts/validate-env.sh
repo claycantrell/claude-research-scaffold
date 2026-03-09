@@ -18,7 +18,6 @@ tools=(
   doi2pdf
   pdf2doi
   scite-cli
-  arxiv-summarizer
   vale
   mmdc
   gnuplot
