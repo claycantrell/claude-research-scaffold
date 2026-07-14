@@ -59,46 +59,11 @@ make extract-all
 
 ---
 
-## pdfminer.six
+## When pdftotext struggles
 
-Layout-aware extraction for complex PDFs -- multi-column layouts, embedded tables, and unusual formatting.
+Two-column conference papers (ACM/IEEE style) can come out with mangled column order. Two fixes before reaching for heavier tooling:
 
-### Install
+- `pdftotext -layout sources/paper.pdf -` preserves the physical layout, which often reads better for two-column text
+- Claude can usually reconstruct the reading order from mangled output anyway — extraction quality matters less when the reader is a model
 
-```bash
-pip install pdfminer.six
-```
-
-No API key required.
-
-### Examples
-
-```bash
-# Basic extraction (layout-aware by default)
-pdf2txt.py sources/paper.pdf > sources/paper.txt
-
-# Output as HTML (preserves some formatting)
-pdf2txt.py -t html sources/paper.pdf > sources/paper.html
-
-# Extract only pages 1-5
-pdf2txt.py -p 1,2,3,4,5 sources/paper.pdf > sources/paper.txt
-
-# Adjust character margin for better column detection
-pdf2txt.py -M 2.0 sources/paper.pdf > sources/paper.txt
-```
-
-### When to use pdfminer instead of pdftotext
-
-| Scenario | Use |
-|---|---|
-| Standard single-column paper | `pdftotext` (faster) |
-| Two-column conference paper | `pdfminer.six` (better column handling) |
-| Paper with complex tables | `pdfminer.six` (layout-aware) |
-| Batch processing many PDFs | `pdftotext` (faster) |
-| Need HTML output | `pdfminer.six` |
-
-### How it connects
-
-- Same workflow as `pdftotext`: output goes into `sources/` as `.txt` files for searching and note-taking.
-- Particularly useful for ACM/IEEE-style two-column papers where `pdftotext` mangles the column order.
-- The `requirements.txt` includes `pdfminer.six` so it is installed automatically by `setup.sh`.
+If a PDF is truly hostile (scanned images, complex tables), say so — OCR or manual transcription of the relevant table beats fighting the extractor.

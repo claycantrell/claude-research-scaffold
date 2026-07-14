@@ -1,189 +1,113 @@
 # End-to-End Research Workflow
 
-A step-by-step walkthrough of a complete research session using this scaffold.
+A step-by-step walkthrough of a complete research project using this scaffold, from question to submission. Claude drives all of this in conversation — this doc shows what happens underneath.
 
 ---
 
 ## 1. Define your research question
 
-Edit `outline.md` to set your working title, research question, and thesis statement. Sketch the section structure.
+Edit `outline.md`: working title, research question, thesis statement, section structure, target venue and length. Everything downstream flows from this file.
+
+## 2. Build the search queue
+
+For each outline section, identify the evidence it needs and add prioritized entries to `search-queue.md`:
+
+- **P0** — blocks drafting: literature-positioning papers, core framing, evidence for vulnerable claims
+- **P1** — search while drafting, when a section reveals a gap
+- **P2** — only if a draft demands it
+
+The queue defines a **good-enough-to-draft threshold** so research can't become an excuse not to write.
+
+## 3. Search for papers
 
 ```bash
-$EDITOR outline.md
+make search-py QUERY="cognitive enhancement tools"     # human-readable, citation counts
+make search QUERY="..."                                # BibTeX output for references.bib
+make search-openalex QUERY="..."                       # alternative index (250M+ works)
+make search-author AUTHOR="Jane Smith"                 # everything by one author
 ```
 
----
+Update the queue entry with what was found (or what was tried, if nothing was).
 
-## 2. Search for papers
-
-Cast a wide net with Semantic Scholar:
+## 4. Download and catalog
 
 ```bash
-make search QUERY="cognitive augmentation artificial intelligence"
+make fetch-arxiv ID="2301.00001"                # arXiv PDFs (covers most CS/ML)
+make fetch-doi DOI="10.1038/s41586-020-2649-2"  # open-access only; fails honestly on paywalls
+make add-paper DOI="..."                        # register in papis with full metadata
+make bib                                        # regenerate bibliography/references.bib
 ```
 
-For more control (filter by year, sort by citations):
+## 5. Extract and read
 
 ```bash
-make search-py QUERY="cognitive enhancement tools"
+make extract-text PDF="sources/paper.pdf"   # one paper
+make extract-all                            # everything in sources/
 ```
 
-Or drop into Python for custom queries:
+Claude reads the extracted text and summarizes directly — no separate summarization tool.
 
-```python
-from semanticscholar import SemanticScholar
-sch = SemanticScholar()
-results = sch.search_paper("spaced repetition AI", year="2020-2025", limit=20)
-top = sorted(results, key=lambda p: p.citationCount or 0, reverse=True)[:10]
-for p in top:
-    print(f"[{p.year}] {p.citationCount} cites | {p.title} | DOI:{p.externalIds.get('DOI','?')}")
-```
+## 6. Take reading notes
 
----
-
-## 3. Download papers
-
-Grab PDFs by arXiv ID or DOI:
-
-```bash
-make fetch-arxiv ID="2301.00001"
-make fetch-doi DOI="10.1038/s41586-020-2649-2"
-```
-
-PDFs are saved to `sources/`.
-
----
-
-## 4. Add to your library
-
-Import into papis with full metadata:
-
-```bash
-# By DOI (pulls metadata from CrossRef)
-make add-paper DOI="10.1038/s41586-020-2649-2"
-
-# By local PDF (prompts for metadata)
-make add-pdf PDF="sources/arxiv-2301.00001.pdf"
-```
-
-Papers are stored in `library/<slug>/` as `info.yaml` + PDF.
-
----
-
-## 5. Extract text
-
-Convert PDFs to searchable plain text:
-
-```bash
-# Single paper
-make extract-text PDF="sources/paper.pdf"
-
-# All papers at once
-make extract-all
-```
-
----
-
-## 6. Read and triage
-
-To decide if a paper is worth a deep read, extract the text and ask Claude to summarize it:
-
-```bash
-make extract-text PDF="sources/paper.pdf"
-```
-
-Claude can read the extracted text directly and provide a summary — no separate summarization tool needed.
-
----
-
-## 7. Verify citations
-
-Before citing a paper, check if its findings hold up:
-
-```bash
-make verify DOI="10.1038/s41586-020-2649-2"
-```
-
-Look for the supporting vs. contradicting ratio. Papers with high contradiction counts warrant closer scrutiny.
-
----
-
-## 8. Take reading notes
-
-Create a structured note for each paper you read closely:
+One note per paper in `notes/`, created automatically when Claude downloads or summarizes a source:
 
 ```bash
 make new-note TITLE="Cognitive Enhancement in the Age of AI"
-```
-
-This creates `notes/2026-03-08-cognitive-enhancement-in-the-age-of-ai.md` with sections for Summary, Key Findings, Methodology, Relevance, Quotes, and Follow-ups. Fill it in as you read.
-
-Search across your notes later:
-
-```bash
 make search-notes QUERY="working memory"
 ```
 
----
+Notes capture exact quotes with page numbers and specific data points — the raw material that makes drafts traceable.
 
-## 9. Write your manuscript
+## 7. Plan the writing
 
-Edit `manuscript/main.md` using standard markdown with citation keys:
+Once the outline is stable, create `drafts/writing-plan.md`: word budgets per section, the argumentative job of each paragraph, discipline notes, and the paper's throughline. This is the bridge between "what are we arguing?" and the prose.
+
+## 8. Draft sections
+
+When 2+ notes speak to the same section, discuss how the papers connect, agree on the evidence chain, and save a section draft in `drafts/` — argument, numbered evidence bridge, gaps, rough prose with `[@key]` citations. **Drafts capture your reasoning and require your approval; notes are automatic.**
+
+## 9. Write the manuscript
+
+Polish section drafts into `manuscript/main.md`:
 
 ```markdown
 Cognitive load theory [@sweller1988] provides a framework for understanding
-how AI tools might reduce extraneous processing demands. Recent work
-[@smith2024; @jones2023] extends this to human-AI collaboration contexts.
+how AI tools might reduce extraneous processing demands [@smith2024; @jones2023].
 ```
 
-Use `templates/section-draft.md` to draft individual sections before integrating.
-
----
-
-## 10. Build the bibliography
-
-Export your papis library to the BibTeX file that Pandoc reads:
+## 10. Build
 
 ```bash
-make bib
+make pdf         # via tectonic (self-contained LaTeX; installed by setup.sh)
+make docx        # for journals that want Word
+make html        # for sharing
+make wordcount   # against the writing plan's budgets
 ```
 
-This regenerates `bibliography/references.bib` from all entries in `library/`.
-
----
-
-## 11. Compile your manuscript
-
-Build the final output:
+## 11. Check quality
 
 ```bash
-# PDF (requires LaTeX)
-make pdf
-
-# Word document (for journal submissions)
-make docx
-
-# HTML (for sharing/preview)
-make html
-
-# All three at once
-make all
+make lint          # Vale: passive voice, hedging, weasel words
+make readability   # grade level, fog index
+make grammar       # LanguageTool (optional install)
+make figures       # rebuild diagrams; check them in the built PDF at print size
 ```
-
-Outputs land in `output/`. Check `make wordcount` to track progress.
-
----
 
 ## 12. Iterate
 
-The cycle repeats. As you write, you will discover gaps:
+Writing reveals gaps → new queue entries → search → notes → drafts → manuscript. Claude keeps `progress.md`, `decisions.md`, and `search-queue.md` current as the loop runs, so any future session picks up exactly where this one stopped.
 
-- New terms to search: `make search QUERY="..."`
-- New papers to download: `make fetch-doi DOI="..."`
-- New papers to add to the library: `make add-paper DOI="..."`
-- New notes to take: `make new-note TITLE="..."`
-- Rebuild the bibliography: `make bib`
-- Recompile: `make pdf`
+## 13. Submit
+
+Copy `templates/submission-checklist.md` to the project root and work through it:
+
+```bash
+make verify-bib                                 # every references.bib entry checked against Crossref/arXiv
+make verify DOI="..."                           # citation support/contradiction (optional; needs scite.ai)
+make diff OLD="submitted-v1.md" NEW="manuscript/main.md"   # track-changes PDF for revisions
+```
+
+Then tag the snapshot (`git tag submitted-<venue>-<date>`) and record the submission in `progress.md`.
 
 ---
 
@@ -191,34 +115,45 @@ The cycle repeats. As you write, you will discover gaps:
 
 | Stage | Command | Docs |
 |---|---|---|
-| Search | `make search QUERY="..."` | [01-discovery.md](01-discovery.md) |
-| Download | `make fetch-doi DOI="..."` | [02-retrieval.md](02-retrieval.md) |
+| Search | `make search-py QUERY="..."` | [01-discovery.md](01-discovery.md) |
+| Download | `make fetch-arxiv ID="..."` / `make fetch-doi DOI="..."` | [02-retrieval.md](02-retrieval.md) |
 | Add to library | `make add-paper DOI="..."` | [05-reference-management.md](05-reference-management.md) |
 | Extract text | `make extract-text PDF="..."` | [04-pdf-extraction.md](04-pdf-extraction.md) |
-| Verify | `make verify DOI="..."` | [03-summarization.md](03-summarization.md) |
 | New note | `make new-note TITLE="..."` | [06-note-taking.md](06-note-taking.md) |
 | Build bib | `make bib` | [05-reference-management.md](05-reference-management.md) |
-| Compile PDF | `make pdf` | [07-writing-and-publishing.md](07-writing-and-publishing.md) |
-| All formats | `make all` | [07-writing-and-publishing.md](07-writing-and-publishing.md) |
-| Word count | `make wordcount` | [07-writing-and-publishing.md](07-writing-and-publishing.md) |
+| Verify bibliography | `make verify-bib` | [03-summarization.md](03-summarization.md) |
+| Verify one source | `make verify DOI="..."` (optional) | [03-summarization.md](03-summarization.md) |
+| Compile | `make pdf` / `make all` | [07-writing-and-publishing.md](07-writing-and-publishing.md) |
+| Quality | `make lint` / `make readability` | [08-writing-quality.md](08-writing-quality.md) |
+| Figures | `make figure SRC="..."` / `make plot SRC="..."` | [09-figures-and-diagrams.md](09-figures-and-diagrams.md) |
+| Track changes | `make diff OLD="..." NEW="..."` | [10-revision-and-review.md](10-revision-and-review.md) |
 
 ## Directory map
 
 ```
 .
+├── outline.md               ← research plan: thesis, sections, venue
+├── search-queue.md          ← prioritized literature backlog (P0/P1/P2)
+├── progress.md              ← what's done, where we left off
+├── decisions.md             ← choices made, with the why
+├── archive.md               ← retired entries from the three files above
+├── manuscript/main.md       ← the paper (write here)
+├── drafts/                  ← section drafts + writing-plan.md
+├── notes/                   ← reading notes, one per paper
+├── sources/                 ← downloaded PDFs
+├── library/                 ← papis reference library (YAML + PDF)
 ├── bibliography/
 │   ├── references.bib       ← auto-generated by `make bib`
-│   └── citation-style.csl   ← download from zotero.org/styles
-├── library/                  ← papis stores papers here (YAML + PDF)
-├── manuscript/
-│   └── main.md              ← your manuscript (write here)
-├── notes/                    ← reading notes (`make new-note`)
-├── output/                   ← compiled PDF/DOCX/HTML (`make pdf`)
-├── sources/                  ← downloaded PDFs (`make fetch-doi`)
-├── templates/
-│   ├── note.md              ← reading note template
-│   └── section-draft.md     ← section draft template
-├── Makefile                  ← all shortcuts live here
-├── outline.md               ← research outline
+│   └── citation-style.csl   ← swappable CSL style (APA 7th default)
+├── figures/                 ← Mermaid/gnuplot sources + rendered images
+├── output/                  ← compiled PDF/DOCX/HTML (generated)
+├── scratch/                 ← brainstorming (git-ignored)
+├── data/, cache/            ← (empirical projects) datasets + API caches (git-ignored)
+├── templates/               ← note, section-draft, search-queue, writing-plan,
+│                              submission-checklist, peer-review-response
+├── scripts/                 ← helper scripts (search, verify-bib, batch ops)
+├── docs/                    ← these tool docs
+├── .claude/skills/          ← Claude's on-demand playbooks per workflow stage
+├── Makefile                 ← all commands (`make help`)
 └── setup.sh                 ← one-command installer
 ```

@@ -19,11 +19,13 @@ This is a community template — contributions are welcome.
 
 ## Adding a New Tool
 
-1. Add install instructions to `setup.sh`
-2. Add Python packages to `requirements.txt` (if applicable)
-3. Create or update the relevant file in `docs/` (organized by workflow stage)
-4. Add a Makefile target if the tool has common CLI commands
-5. Update the toolkit table in `README.md`
+1. Ask first whether it earns its place: a Makefile target must use it, or it doesn't go in. (A past cleanup removed six tools that were installed, documented, and validated but backed nothing.)
+2. Add install instructions to `setup.sh`
+3. Add Python packages to `requirements.txt` (if applicable)
+4. Add the tool to the check list in `scripts/validate-env.sh` and the validation list in `setup.sh`
+5. Add a Makefile target — if a paid account is required, make it optional: don't install it in `setup.sh`, and have the target degrade with install instructions
+6. Create or update the relevant file in `docs/` (organized by workflow stage)
+7. Update the toolkit table in `README.md`, and the relevant skill in `.claude/skills/` if Claude should use the tool
 
 ## Standards
 

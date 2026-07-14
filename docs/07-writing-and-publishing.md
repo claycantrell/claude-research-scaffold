@@ -20,7 +20,7 @@ brew install pandoc
 sudo apt install pandoc
 ```
 
-A LaTeX distribution is required for PDF output. On macOS, install [BasicTeX](https://www.tug.org/mactex/morepackages.html) or full MacTeX. On Linux, `sudo apt install texlive-xetex`.
+PDF output uses **tectonic**, a self-contained LaTeX engine that downloads packages on demand — `setup.sh` installs it, no TeX distribution needed. (If you prefer a traditional install, `make pdf PDF_ENGINE=xelatex` works with BasicTeX/MacTeX or `texlive-xetex`.)
 
 ### Manuscript YAML frontmatter
 
@@ -100,10 +100,10 @@ curl -o bibliography/citation-style.csl \
 ### Makefile shortcuts
 
 ```bash
-# Build PDF (requires LaTeX)
+# Build PDF (via tectonic — installed by setup.sh)
 make pdf
 
-# Build DOCX (no LaTeX needed)
+# Build DOCX (no LaTeX involved at all)
 make docx
 
 # Build standalone HTML
@@ -121,12 +121,12 @@ make clean
 
 | Target | Output file | Engine |
 |---|---|---|
-| `make pdf` | `output/manuscript.pdf` | xelatex via Pandoc |
+| `make pdf` | `output/manuscript.pdf` | tectonic (or xelatex) via Pandoc |
 | `make docx` | `output/manuscript.docx` | Pandoc (native) |
 | `make html` | `output/manuscript.html` | Pandoc (standalone) |
 | `make all` | all three | all three |
 
-All outputs land in the `output/` directory. The Makefile passes `--citeproc --bibliography=bibliography/references.bib --csl=bibliography/citation-style.csl --pdf-engine=xelatex` to Pandoc automatically.
+All outputs land in the `output/` directory. The Makefile passes `--citeproc --bibliography=bibliography/references.bib --csl=bibliography/citation-style.csl --pdf-engine=<engine>` to Pandoc automatically, preferring tectonic (self-contained, downloads LaTeX packages on demand) and falling back to xelatex. Override with `make pdf PDF_ENGINE=xelatex`.
 
 ### How it connects
 

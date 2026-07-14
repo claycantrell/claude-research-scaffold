@@ -1,41 +1,16 @@
 # Downloading Papers
 
-Tools for getting PDFs onto your local filesystem.
+Getting PDFs into `sources/`. All retrieval runs through make targets — no extra tools to install.
 
 ---
 
-## arxiv-dl
-
-Download papers from arXiv by URL or paper ID.
-
-### Install
-
-```bash
-pip install arxiv-dl
-```
-
-No API key required.
-
-### Examples
-
-```bash
-# Download by arXiv ID
-arxiv-dl 2301.00001 -d sources/
-
-# Download by full URL
-arxiv-dl https://arxiv.org/abs/2301.00001 -d sources/
-
-# Download multiple papers
-arxiv-dl 2301.00001 2302.12345 2303.67890 -d sources/
-```
-
-### Makefile shortcut
+## Fetch from arXiv
 
 ```bash
 make fetch-arxiv ID="2301.00001"
 ```
 
-Downloads the PDF to `sources/arxiv-2301.00001.pdf` using `curl` against the arXiv PDF endpoint. The Makefile target creates the `sources/` directory automatically if it does not exist.
+Downloads the PDF to `sources/arxiv-2301.00001.pdf` using `curl` against the arXiv PDF endpoint, creating `sources/` if needed. Works for any paper with an arXiv ID — which covers most CS/ML papers, including many later published at conferences.
 
 ### How it connects
 
@@ -44,80 +19,33 @@ Downloads the PDF to `sources/arxiv-2301.00001.pdf` using `curl` against the arX
 
 ---
 
-## doi2pdf
-
-Download any paper by its DOI. Resolves the DOI and attempts to retrieve the PDF.
-
-### Install
-
-```bash
-pip install doi2pdf
-```
-
-No API key required (uses DOI resolution and open-access endpoints).
-
-### Examples
-
-```bash
-# Download by DOI
-doi2pdf 10.1038/s41586-020-2649-2 -o sources/
-
-# Specify a custom filename
-doi2pdf 10.1145/3411764.3445243 -o sources/chi2021-paper.pdf
-
-# Pipe the DOI from another command
-echo "10.1038/s41586-020-2649-2" | xargs doi2pdf -o sources/
-```
-
-### Makefile shortcut
+## Fetch by DOI
 
 ```bash
 make fetch-doi DOI="10.1038/s41586-020-2649-2"
 ```
 
-Uses `curl` with an `Accept: application/pdf` header to resolve the DOI and save the PDF to `sources/doi-10.1038_s41586-020-2649-2.pdf` (slashes replaced with underscores).
+Resolves the DOI with an `Accept: application/pdf` header and saves to `sources/doi-<doi>.pdf` (slashes become underscores).
 
-### How it connects
+**This only works for open-access papers.** Most publishers serve a paywalled landing page instead of a PDF; the target detects this, deletes the non-PDF download, and says so. When that happens, try in order:
 
-- Same as `arxiv-dl`: PDFs land in `sources/` for extraction or library import.
-- Use the DOI directly with `make add-paper DOI="..."` to register the paper in your papis library with full metadata.
+1. **A preprint version** — search the title on arXiv, then `make fetch-arxiv`
+2. **The author's website** — many authors self-archive accepted manuscripts
+3. **Institutional library access** — download manually and drop the file in `sources/`
+
+However you obtain the PDF, register it afterwards: `make add-pdf PDF="sources/file.pdf"` or `make add-paper DOI="..."` for full metadata.
 
 ---
 
-## pdf2doi
-
-Extract the DOI embedded in a PDF you already have on disk.
-
-### Install
-
-```bash
-pip install pdf2doi
-```
-
-No API key required.
-
-### Examples
-
-```bash
-# Extract DOI from a single PDF
-pdf2doi sources/paper.pdf
-
-# Process all PDFs in a directory
-pdf2doi sources/
-
-# Output in BibTeX format
-pdf2doi sources/paper.pdf -b
-```
-
-### Makefile shortcut
+## Find the DOI in a PDF you already have
 
 ```bash
 make identify-doi PDF="sources/paper.pdf"
 ```
 
-Extracts text from the PDF with `pdftotext` and searches for a DOI pattern using `grep`. Returns the first match or reports that no DOI was found.
+Extracts text with `pdftotext` and greps for a DOI pattern; returns the first match or reports none found.
 
 ### How it connects
 
-- Once you have the DOI, use it with `make add-paper DOI="..."` to pull full metadata into your papis library.
-- Also useful for verifying citations: pipe the DOI into `make verify DOI="..."` to check support/contradiction via scite.
+- Once you have the DOI, `make add-paper DOI="..."` pulls full metadata into the papis library.
+- The DOI also feeds `make verify DOI="..."` (citation support/contradiction) and `make verify-bib` (bibliography checking).

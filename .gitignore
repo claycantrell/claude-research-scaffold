@@ -41,15 +41,17 @@ output/*.synctex.gz
 # Papis cache
 library/**/cache/
 
-# nb internals
-.nb/
-
 # Scratch (brainstorming space — git-ignored by default)
 scratch/*
 !scratch/README.md
 
-# Node (for scite-cli)
+# Node
 node_modules/
+
+# Empirical projects: generated datasets and API-response caches
+# (large, rebuildable from scripts/ — keep the scripts, not the bytes)
+data/
+cache/
 
 # Uncomment to stop tracking source PDFs (they can be large):
 # sources/*.pdf

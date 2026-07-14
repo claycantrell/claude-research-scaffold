@@ -1,8 +1,9 @@
-# {{PAPER_TITLE}}
-
-**Date:** {{DATE}}
-**DOI:** {{DOI}}
-**Tags:**
+---
+title: "{{PAPER_TITLE}}"
+date: {{DATE}}
+tags: []
+doi: ""
+---
 
 ## Summary
 
@@ -12,12 +13,12 @@
 ## Methodology
 -
 
-## Relevance to My Research
+## Relevance to This Work
 
 ## Key Quotes
 >
 
-## Questions / Follow-ups
+## Questions & Follow-ups
 -
 
 ## References to Chase

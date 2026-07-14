@@ -30,7 +30,7 @@ The project `.vale.ini` in the repo root controls Vale's behavior:
 StylesPath = .vale/styles
 MinAlertLevel = suggestion
 
-Packages = write-good, proselint, Joblint
+Packages = write-good, proselint
 
 [*.md]
 BasedOnStyles = Vale, write-good, proselint
@@ -59,7 +59,6 @@ Edit the `Packages` line in `.vale.ini`. Some useful packages:
 |---|---|
 | `write-good` | Passive voice, weasel words, "there is/are" |
 | `proselint` | Jargon, cliches, redundancy, hedging |
-| `Joblint` | Insensitive or exclusionary language |
 | `alex` | Insensitive, inconsiderate writing |
 | `Microsoft` | Microsoft Writing Style Guide rules |
 | `Google` | Google Developer Documentation Style Guide |
@@ -80,7 +79,7 @@ The experiment was conducted in a controlled environment.
 
 ## LanguageTool — Grammar and Spell Checker
 
-**Install:** `brew install languagetool`
+**Install:** `brew install languagetool` — optional and not installed by `setup.sh` (it pulls in a Java runtime). `make lint` (Vale) covers style without it; LanguageTool adds grammar and spelling.
 
 LanguageTool is an open-source grammar and spell checker supporting 25+ languages. It runs locally — no text is sent to external servers. It catches subject-verb agreement errors, comma splices, article misuse ("a" vs. "an"), spelling mistakes, and common grammatical errors.
 

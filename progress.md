@@ -5,6 +5,9 @@
 ## Status
 Just started — project not yet set up.
 
+## Phase
+Research  <!-- Research → Drafting → Polish → Submitted → Revision. Update as the project moves. -->
+
 ## Sections
 - [ ] I. Introduction
 - [ ] II. Background / Literature Review
