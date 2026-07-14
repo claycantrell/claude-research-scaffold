@@ -11,6 +11,7 @@ tools=(
   npm
   pdftotext
   pandoc
+  tectonic
   papis
   nb
   zk

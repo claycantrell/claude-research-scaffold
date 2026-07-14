@@ -74,6 +74,7 @@ install_system_deps() {
         brew_install node
         brew_install poppler       # provides pdftotext
         brew_install pandoc
+        brew_install tectonic      # self-contained LaTeX engine for PDF builds
         brew_install nb
         brew_install zk
         brew_install vale
@@ -91,6 +92,19 @@ install_system_deps() {
         apt_install npm
         apt_install poppler-utils  # provides pdftotext
         apt_install pandoc
+
+        # tectonic (self-contained LaTeX engine for PDF builds)
+        if ! command -v tectonic &>/dev/null; then
+            if command -v brew &>/dev/null; then
+                brew_install tectonic
+            else
+                info "Installing tectonic via installer script..."
+                curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh -s -- -b /usr/local/bin 2>/dev/null \
+                    || warn "Could not install tectonic — 'make pdf' will fall back to xelatex (needs a TeX distribution)"
+            fi
+        else
+            ok "tectonic already installed"
+        fi
 
         # nb (xwmx/tui notebook)
         if ! command -v nb &>/dev/null; then

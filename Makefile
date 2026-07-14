@@ -16,7 +16,10 @@ OUTPUT_DIR    = output
 SOURCES_DIR   = sources
 LIBRARY_DIR   = library
 NOTES_DIR     = notes
-PANDOC_FLAGS  = --filter pandoc-crossref --citeproc --bibliography=$(BIB_FILE) --csl=$(CSL_FILE) --pdf-engine=xelatex
+# Prefer tectonic (self-contained, auto-downloads packages) over xelatex
+# (needs a full TeX distribution). Override with: make pdf PDF_ENGINE=xelatex
+PDF_ENGINE   ?= $(shell command -v tectonic >/dev/null 2>&1 && echo tectonic || echo xelatex)
+PANDOC_FLAGS  = --filter pandoc-crossref --citeproc --bibliography=$(BIB_FILE) --csl=$(CSL_FILE) --pdf-engine=$(PDF_ENGINE)
 
 # Default target
 .DEFAULT_GOAL := help
@@ -131,6 +134,10 @@ verify: ## Check citation support/contradiction via scite-cli. Usage: make verif
 		exit 1; \
 	fi
 	scite-cli "$(DOI)"
+
+.PHONY: verify-bib
+verify-bib: ## Verify every references.bib entry (authors/year/title) against Crossref/OpenAlex
+	python3 scripts/verify-bib.py $(BIB_FILE)
 
 # ==============================================================================
 # REFERENCE MANAGEMENT

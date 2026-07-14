@@ -183,6 +183,8 @@ Once Claude Code is running inside this project, you can say things like:
 - "Change the citation style from APA to Chicago"
 - "Show me what changed between my first and current draft"
 - "Help me write a response to these peer reviewer comments"
+- "I'm getting ready to submit — walk me through the submission checklist"
+- "Verify my bibliography — check every reference against the real paper"
 
 ### Project Management
 - "What sources are in my library?"
@@ -379,6 +381,7 @@ Everything Claude does under the hood uses `make` commands. If you prefer to run
 | What you want to do | Command |
 |---------------------|---------|
 | Check citation support/contradiction | `make verify DOI="10.1038/s41586-020-2649-2"` |
+| Verify your whole bibliography against the published record | `make verify-bib` |
 
 ### Organizing Sources
 | What you want to do | Command |
@@ -444,6 +447,7 @@ Claude uses 20+ free CLI tools to do the work. You don't need to know about them
 | Manages your reference library | papis | [docs/05-reference-management.md](docs/05-reference-management.md) |
 | Structured note-taking | nb, zk | [docs/06-note-taking.md](docs/06-note-taking.md) |
 | Builds PDF/Word/HTML from Markdown | pandoc | [docs/07-writing-and-publishing.md](docs/07-writing-and-publishing.md) |
+| Typesets the PDF (self-contained LaTeX) | tectonic | [docs/07-writing-and-publishing.md](docs/07-writing-and-publishing.md) |
 | Checks prose style and tone | Vale | [docs/08-writing-quality.md](docs/08-writing-quality.md) |
 | Checks grammar and spelling | LanguageTool | [docs/08-writing-quality.md](docs/08-writing-quality.md) |
 | Measures readability (grade level) | GNU style | [docs/08-writing-quality.md](docs/08-writing-quality.md) |

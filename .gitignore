@@ -51,5 +51,10 @@ scratch/*
 # Node (for scite-cli)
 node_modules/
 
+# Empirical projects: generated datasets and API-response caches
+# (large, rebuildable from scripts/ — keep the scripts, not the bytes)
+data/
+cache/
+
 # Uncomment to stop tracking source PDFs (they can be large):
 # sources/*.pdf

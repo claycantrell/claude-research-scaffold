@@ -48,8 +48,11 @@ templates/
   section-draft.md          ← Template for section drafts.
   search-queue.md           ← Template for the search queue (priority tiers, thresholds).
   writing-plan.md           ← Template for the writing plan (word budgets, discipline notes).
+  submission-checklist.md   ← Pre-submission checklist. Copy to project root near the end.
 scripts/                    ← Helper scripts for batch operations.
 docs/                       ← Detailed tool documentation by workflow stage.
+data/                       ← (Empirical projects) generated datasets. Git-ignored — rebuildable from scripts.
+cache/                      ← (Empirical projects) cached API responses, embeddings, model outputs. Git-ignored.
 ```
 
 ## Available Makefile Commands
@@ -73,6 +76,7 @@ Use these via `Bash` tool. They are the primary interface to the research toolki
 
 ### Verification
 - `make verify DOI="10.1038/..."` — Check if findings are supported/contradicted
+- `make verify-bib` — Verify every references.bib entry (authors, year, title) against Crossref/arXiv. Run before every submission.
 
 ### Reference Management
 - `make add-paper DOI="10.1038/..."` — Add paper to papis library by DOI
@@ -278,6 +282,34 @@ Once the outline is stable and research is underway, help the user create a **wr
 1. For draft comparison: `make diff OLD="manuscript/draft-v1.md" NEW="manuscript/main.md"` → generates track-changes PDF
 2. For peer review: copy `templates/peer-review-response.md` into `manuscript/`, help fill in responses point by point
 
+### When the project runs experiments (empirical papers):
+
+Some projects don't just review literature — they generate their own results (run models, label data, compute statistics). For these:
+
+1. **Experiment code lives in `scripts/`, generated data in `data/`, API caches in `cache/`.** Both `data/` and `cache/` are git-ignored — the scripts are the source of truth, and anyone should be able to rebuild the data by running them.
+2. **Cache every expensive call.** API responses (LLM calls, dataset downloads) and computed artifacts (embeddings, model outputs) get cached to disk on first run so experiments are cheap to re-run and results are stable across sessions.
+3. **Log to files, not just the terminal.** Long-running scripts must write their output to a log file (e.g. `cache/run-YYYY-MM-DD.log`). Terminal output disappears; the paper's numbers must be re-checkable later.
+4. **Record every experiment in `notes/`.** One note per experiment: the exact command, parameters, and headline result. When drafting, numbers come from these notes and log files — never from memory.
+5. **API keys go in `.env`** (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY` are pre-listed in `.env.example`). Never hardcode keys in scripts.
+6. **Negative and null results get recorded too.** A control that showed nothing is evidence — it belongs in progress.md and often in the paper.
+
+### When the manuscript is nearing submission:
+
+1. Copy `templates/submission-checklist.md` to the project root as `submission-checklist.md`
+2. Work through it top to bottom with the user, checking items off in the file
+3. Run `make verify-bib` and fix every mismatch against the published record
+4. Do the grounding pass: for every example, quote, and statistic in the manuscript, open the underlying source file and confirm it matches (see "Never invent manuscript content" below)
+5. After submitting, record the venue, date, and version in progress.md, and tag the snapshot: `git tag submitted-<venue>-<date>`
+
+## Never Invent Manuscript Content — CRITICAL
+
+Every example, quotation, statistic, and data excerpt in the manuscript (and in section drafts) must be **copied from a real file in this project** — a reading note, a source PDF's extracted text, a data file, a cache file, or a log. Never write an illustrative example from imagination, even a plausible one: on a past paper, invented "example reviews" made it into a near-final draft and had to be caught and replaced by hand.
+
+- Before writing an example into the manuscript, open the underlying file and copy the real text. Cite where it came from in a comment or note if it isn't obvious.
+- Before writing a number, find it in an analysis output, log file, or experiment note. If you can't find it, re-run the analysis or tell the user the number needs to be regenerated — don't approximate.
+- If the user asks for an illustrative example and no real one exists, say so and offer to pull a real one from the data.
+- This applies to paraphrases of sources too: re-read the note or the paper before characterizing what it says.
+
 ## Writing Conventions
 
 - **Manuscript format:** Pandoc Markdown with YAML frontmatter
@@ -317,6 +349,18 @@ Five files track the state of this research project across sessions. **Read all 
 - **"Where We Left Off" is the most important line in progress.md.** Write it as if you're leaving a note for a colleague picking up your shift: "User finished downloading papers on cognitive offloading. Next step: create reading notes and start drafting Section II."
 - **Decisions should include the why.** Not just "APA style" but "APA style — user's department requires it."
 - **Never delete decisions.** If a decision changes, update it with the new choice and note that it changed: "~~Chicago style~~ → APA style (changed March 2026, department requirement)."
+- **These triggers ALWAYS produce a decisions.md entry:** choosing or changing the target venue; changing the title; cutting or adding scope (an experiment, a section, a dataset); reframing the contribution; ruling out an approach after trying it. On a past paper, ~20 such decisions were made during writing and none were recorded — the file stayed at its template default while the paper changed venue, title, and framing.
+- **Progress tracking does not end when drafting ends.** Writing → polish → submission → revision are all phases. When the manuscript is complete, progress.md should say so ("Submitted to X on DATE"), not still describe the writing phase. A finished project whose progress.md says "ready to begin writing" has broken memory.
+
+### Session-Close Ritual — do this EVERY time work wraps up
+
+Whenever you save a snapshot, and whenever the session is winding down (the user says thanks/goodbye, asks for a final build, or the work reaches a milestone), do all three of these **without being asked**:
+
+1. **progress.md** — update the checklist and rewrite "Where We Left Off" to describe the current state, not the state from three sessions ago.
+2. **decisions.md** — scan the session for anything matching the trigger list above and record it.
+3. **search-queue.md** — mark completed searches, add newly discovered gaps.
+
+Then include all three files in the snapshot. Stale memory files are worse than no memory files: the next session (or the next collaborator) will trust them and be wrong.
 
 ## First-Time Setup Help
 

@@ -121,12 +121,12 @@ make clean
 
 | Target | Output file | Engine |
 |---|---|---|
-| `make pdf` | `output/manuscript.pdf` | xelatex via Pandoc |
+| `make pdf` | `output/manuscript.pdf` | tectonic (or xelatex) via Pandoc |
 | `make docx` | `output/manuscript.docx` | Pandoc (native) |
 | `make html` | `output/manuscript.html` | Pandoc (standalone) |
 | `make all` | all three | all three |
 
-All outputs land in the `output/` directory. The Makefile passes `--citeproc --bibliography=bibliography/references.bib --csl=bibliography/citation-style.csl --pdf-engine=xelatex` to Pandoc automatically.
+All outputs land in the `output/` directory. The Makefile passes `--citeproc --bibliography=bibliography/references.bib --csl=bibliography/citation-style.csl --pdf-engine=<engine>` to Pandoc automatically, preferring tectonic (self-contained, downloads LaTeX packages on demand) and falling back to xelatex. Override with `make pdf PDF_ENGINE=xelatex`.
 
 ### How it connects
 
