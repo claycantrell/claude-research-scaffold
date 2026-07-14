@@ -75,11 +75,11 @@ Now just tell it what you need. Claude will handle the rest — installing tools
 
 **To get your copy of this project,** say:
 
-> "I don't have a GitHub account yet. I need you to install the GitHub CLI, help me create an account and log in, then fork and clone the research-scaffold project from claycantrell on GitHub. Walk me through each step and tell me exactly what to do."
+> "I don't have a GitHub account yet. I need you to install the GitHub CLI, help me create an account and log in, then fork and clone the claude-research-scaffold project from claycantrell on GitHub. Walk me through each step and tell me exactly what to do."
 
-*(If you already have a GitHub account, just say: "Install the GitHub CLI, log me into GitHub, and fork and clone claycantrell/research-scaffold.")*
+*(If you already have a GitHub account, just say: "Install the GitHub CLI, log me into GitHub, and fork and clone claycantrell/claude-research-scaffold.")*
 
-Claude will do the work and tell you what to type when it needs you. When it's done, it will say something like "type `cd research-scaffold`" — do what it says, then start Claude again:
+Claude will do the work and tell you what to type when it needs you. When it's done, it will say something like "type `cd claude-research-scaffold`" — do what it says, then start Claude again:
 
     claude
 
@@ -202,6 +202,7 @@ Once Claude Code is running inside this project, you can say things like:
 | `search-queue.md` | What papers you still need to find, prioritized by tier | Your library request slips |
 | `progress.md` | What's done, what's not, where you left off | Your to-do list |
 | `decisions.md` | Choices you've made about scope, style, focus | Your research journal |
+| `archive.md` | Finished searches and superseded decisions, moved out of the active files | Your filing box in the closet |
 | `manuscript/` | Your paper — the actual writing | Your typewriter |
 | `sources/` | Downloaded PDFs of papers you've found | Your file drawer of photocopied articles |
 | `library/` | Organized metadata for each source | Your card catalog |
@@ -213,6 +214,8 @@ Once Claude Code is running inside this project, you can say things like:
 | `output/` | The finished product — PDF, Word doc, etc. | Your printer tray |
 | `templates/` | Pre-made forms for notes and drafts | Your blank index cards |
 | `docs/` | Detailed instructions for each tool | Your reference manual |
+| `scripts/` | Helper scripts (searching, bibliography checking) — and your experiment code, if the project runs any | Your lab equipment |
+| `data/`, `cache/` | (Empirical projects) generated datasets and saved API results — rebuildable, so not backed up | Your lab bench |
 | `.claude/skills/` | Claude's playbooks for each kind of work (searching, drafting, submitting) — loaded only when needed, so conversations stay fast | Your assistant's procedure binder |
 
 ---
@@ -330,6 +333,7 @@ A typical project follows this arc:
 11. Write           "Let's polish the Section III draft into the manuscript"
 12. Build           "Build my paper as a PDF"
 13. Repeat          "What's next on the search queue?"
+14. Submit          "Walk me through the submission checklist and verify my bibliography"
 ```
 
 All of this happens in conversation. Claude knows the project structure, the tools, your search queue, and your progress.
@@ -345,8 +349,9 @@ Some search tools work better with a free API key. After setup, you'll have a `.
 | Key | What it's for | Cost | Where to get it |
 |-----|--------------|------|-----------------|
 | `SEMANTIC_SCHOLAR_API_KEY` | Faster, unlimited paper searches | Free | [semanticscholar.org](https://www.semanticscholar.org/product/api#Partner-Form) |
+| `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` | Only for projects that run their own LLM experiments | Pay-per-use | [console.anthropic.com](https://console.anthropic.com), [platform.openai.com](https://platform.openai.com) |
 
-The Semantic Scholar key is the only one that matters, and it's free. Claude itself can summarize papers directly — no separate API key needed for that.
+For a literature-based paper, the Semantic Scholar key is the only one that matters, and it's free. Claude itself can summarize papers directly — no separate API key needed for that.
 
 ---
 
@@ -434,7 +439,7 @@ Everything Claude does under the hood uses `make` commands. If you prefer to run
 
 ## The Tools Under the Hood
 
-Claude uses 20+ free CLI tools to do the work. You don't need to know about them, but if you're curious:
+Claude uses a toolbox of free CLI tools to do the work (two optional extras are marked below). You don't need to know about them, but if you're curious:
 
 | What it does | Tool | More info |
 |-------------|------|-----------|
@@ -494,7 +499,7 @@ Yes. This is a GitHub repository, so multiple people can work on it. Each person
 Tell Claude: "Something seems broken, can you check my setup?" It will run diagnostics and fix what it can.
 
 **Can I use this for a dissertation or book?**
-Absolutely. The structure works for any length. You can split chapters into separate files in `manuscript/`.
+It's designed around a single paper-length manuscript. For a dissertation or book, ask Claude to adapt it — split chapters into separate files and update the build accordingly. Workable, but expect some restructuring.
 
 **I prefer writing in Word or Google Docs. Can I still use the rest?**
 Yes. Use Claude for finding, downloading, and organizing sources. When you're ready, say "Export my bibliography" and import the `.bib` file into your word processor's citation manager.

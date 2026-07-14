@@ -20,7 +20,7 @@ brew install pandoc
 sudo apt install pandoc
 ```
 
-A LaTeX distribution is required for PDF output. On macOS, install [BasicTeX](https://www.tug.org/mactex/morepackages.html) or full MacTeX. On Linux, `sudo apt install texlive-xetex`.
+PDF output uses **tectonic**, a self-contained LaTeX engine that downloads packages on demand — `setup.sh` installs it, no TeX distribution needed. (If you prefer a traditional install, `make pdf PDF_ENGINE=xelatex` works with BasicTeX/MacTeX or `texlive-xetex`.)
 
 ### Manuscript YAML frontmatter
 
@@ -100,10 +100,10 @@ curl -o bibliography/citation-style.csl \
 ### Makefile shortcuts
 
 ```bash
-# Build PDF (requires LaTeX)
+# Build PDF (via tectonic — installed by setup.sh)
 make pdf
 
-# Build DOCX (no LaTeX needed)
+# Build DOCX (no LaTeX involved at all)
 make docx
 
 # Build standalone HTML
