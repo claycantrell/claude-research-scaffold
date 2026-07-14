@@ -2,14 +2,6 @@
 semantic_bibtool
 semanticscholar
 
-# Retrieval
-arxiv-dl
-doi2pdf
-pdf2doi
-
-# PDF Extraction
-pdfminer.six
-
 # Reference Management
 papis
 

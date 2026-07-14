@@ -41,14 +41,11 @@ output/*.synctex.gz
 # Papis cache
 library/**/cache/
 
-# nb internals
-.nb/
-
 # Scratch (brainstorming space — git-ignored by default)
 scratch/*
 !scratch/README.md
 
-# Node (for scite-cli)
+# Node
 node_modules/
 
 # Empirical projects: generated datasets and API-response caches

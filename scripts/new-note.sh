@@ -34,7 +34,3 @@ mkdir -p "$NOTES_DIR"
 sed -e "s/{{PAPER_TITLE}}/$TITLE/g" -e "s/{{DATE}}/$DATE/g" "$TEMPLATE" > "$FILEPATH"
 
 echo "Created: $FILEPATH"
-
-if [ -n "${EDITOR:-}" ]; then
-  exec "$EDITOR" "$FILEPATH"
-fi

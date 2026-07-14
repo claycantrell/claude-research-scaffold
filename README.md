@@ -440,17 +440,14 @@ Claude uses 20+ free CLI tools to do the work. You don't need to know about them
 |-------------|------|-----------|
 | Searches 200M+ academic papers | Semantic Scholar | [docs/01-discovery.md](docs/01-discovery.md) |
 | Searches 250M+ papers (alternative) | OpenAlex | [docs/01-discovery.md](docs/01-discovery.md) |
-| Downloads papers from arXiv | arxiv-dl | [docs/02-retrieval.md](docs/02-retrieval.md) |
-| Downloads papers by DOI | doi2pdf | [docs/02-retrieval.md](docs/02-retrieval.md) |
-| Extracts DOIs from PDFs | pdf2doi | [docs/02-retrieval.md](docs/02-retrieval.md) |
-| Checks if findings are supported | scite-cli | [docs/03-summarization.md](docs/03-summarization.md) |
-| Extracts text from PDFs | pdftotext, pdfminer | [docs/04-pdf-extraction.md](docs/04-pdf-extraction.md) |
+| Downloads papers (arXiv, DOI) | curl via make targets | [docs/02-retrieval.md](docs/02-retrieval.md) |
+| Checks if findings are supported | scite-cli (optional, paid) | [docs/03-summarization.md](docs/03-summarization.md) |
+| Extracts text from PDFs | pdftotext | [docs/04-pdf-extraction.md](docs/04-pdf-extraction.md) |
 | Manages your reference library | papis | [docs/05-reference-management.md](docs/05-reference-management.md) |
-| Structured note-taking | nb, zk | [docs/06-note-taking.md](docs/06-note-taking.md) |
 | Builds PDF/Word/HTML from Markdown | pandoc | [docs/07-writing-and-publishing.md](docs/07-writing-and-publishing.md) |
 | Typesets the PDF (self-contained LaTeX) | tectonic | [docs/07-writing-and-publishing.md](docs/07-writing-and-publishing.md) |
 | Checks prose style and tone | Vale | [docs/08-writing-quality.md](docs/08-writing-quality.md) |
-| Checks grammar and spelling | LanguageTool | [docs/08-writing-quality.md](docs/08-writing-quality.md) |
+| Checks grammar and spelling | LanguageTool (optional, heavy) | [docs/08-writing-quality.md](docs/08-writing-quality.md) |
 | Measures readability (grade level) | GNU style | [docs/08-writing-quality.md](docs/08-writing-quality.md) |
 | Generates diagrams from text | Mermaid CLI | [docs/09-figures-and-diagrams.md](docs/09-figures-and-diagrams.md) |
 | Creates scientific charts/plots | gnuplot | [docs/09-figures-and-diagrams.md](docs/09-figures-and-diagrams.md) |

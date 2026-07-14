@@ -13,8 +13,8 @@ description: Search academic literature, manage the search queue, download paper
 
 ## Commands
 
-- `make search QUERY="topic"` — Semantic Scholar, BibTeX output
-- `make search-py QUERY="topic"` — deeper search with citation counts and years
+- `make search-py QUERY="topic"` — Semantic Scholar, human-readable results with citation counts and years (use this for presenting options to the user)
+- `make search QUERY="topic"` — Semantic Scholar, BibTeX output (use this when appending an entry to references.bib)
 - `make search-openalex QUERY="topic"` — OpenAlex (250M+ papers, alternative source)
 - `make search-author AUTHOR="Jane Smith"` — papers by author, with h-index
 - `make fetch-arxiv ID="2301.00001"` / `make fetch-doi DOI="10.1038/..."` — download to sources/

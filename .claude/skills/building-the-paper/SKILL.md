@@ -35,7 +35,7 @@ The PDF engine prefers **tectonic** (self-contained, downloads LaTeX packages on
 ## Writing quality
 
 1. `make lint` — prose style via Vale (passive voice, jargon, weasel words, hedging)
-2. `make grammar` — grammar/spelling via LanguageTool
+2. `make grammar` — grammar/spelling via LanguageTool (optional tool, not installed by default — skip gracefully if missing)
 3. `make readability` — Flesch-Kincaid grade, fog index, sentence complexity
 4. Summarize plainly: "3 style issues, 2 grammar issues; reading level grade 14 — appropriate for journals"
 5. Offer to fix issues directly in the manuscript

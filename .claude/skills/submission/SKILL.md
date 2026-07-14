@@ -17,7 +17,7 @@ description: Pre-submission checks, bibliography verification, and peer-review r
 
 ## Verifying a single source's standing
 
-- `make verify DOI="..."` — has the paper been supported or contradicted?
+- `make verify DOI="..."` — has the paper been supported or contradicted? (optional tool: needs a paid scite.ai account; if missing, check the paper's citations manually on scite.ai or Semantic Scholar)
 - Report supported/contradicted/mixed; suggest alternatives if disputed
 
 ## Responding to peer review

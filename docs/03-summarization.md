@@ -14,20 +14,18 @@ Claude reads the extracted text and can provide summaries, identify key findings
 
 ---
 
-## scite-cli
+## scite-cli (optional — requires a scite.ai subscription)
 
-Check whether a paper's findings have been supported or contradicted by subsequent research (1.6B+ citation statements).
+Check whether a paper's findings have been supported or contradicted by subsequent research (1.6B+ citation statements). **Not installed by `setup.sh`** — it needs a paid scite.ai account, so set it up only if you have one. Without it, `make verify-bib` still verifies your bibliography's metadata, and you can check citation context manually at https://scite.ai.
 
 ### Install
 
 Clone and set up from GitHub (Node.js required):
 
 ```bash
-git clone https://github.com/OpenDevEd/scite-cli.git /tmp/scite-cli
-cd /tmp/scite-cli && npm run setup
+git clone https://github.com/scitedotai/scite-cli.git ~/.local/share/scite-cli
+cd ~/.local/share/scite-cli && npm install && npm link
 ```
-
-The `setup.sh` script in this repo handles this automatically (installs to `~/.local/share/scite-cli`).
 
 ### API Key
 

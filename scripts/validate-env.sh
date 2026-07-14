@@ -13,12 +13,6 @@ tools=(
   pandoc
   tectonic
   papis
-  nb
-  zk
-  arxiv-dl
-  doi2pdf
-  pdf2doi
-  scite-cli
   vale
   mmdc
   gnuplot

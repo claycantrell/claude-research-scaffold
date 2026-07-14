@@ -29,7 +29,7 @@ PANDOC_FLAGS  = --filter pandoc-crossref --citeproc --bibliography=$(BIB_FILE) -
 # ==============================================================================
 
 .PHONY: search
-search: ## Search Semantic Scholar. Usage: make search QUERY="topic"
+search: ## Search Semantic Scholar, output BibTeX entries (for appending to references.bib). Usage: make search QUERY="topic"
 	@if [ -z "$(QUERY)" ]; then \
 		echo "Error: QUERY is required. Usage: make search QUERY=\"topic\""; \
 		exit 1; \
@@ -37,7 +37,7 @@ search: ## Search Semantic Scholar. Usage: make search QUERY="topic"
 	semantic_bibtool "$(QUERY)"
 
 .PHONY: search-py
-search-py: ## Deeper search with citation counts. Usage: make search-py QUERY="topic"
+search-py: ## Search Semantic Scholar, human-readable results with citation counts. Usage: make search-py QUERY="topic"
 	@if [ -z "$(QUERY)" ]; then \
 		echo "Error: QUERY is required. Usage: make search-py QUERY=\"topic\""; \
 		exit 1; \
@@ -84,10 +84,17 @@ fetch-doi: ## Download by DOI. Usage: make fetch-doi DOI="10.1234/example"
 	fi
 	@mkdir -p $(SOURCES_DIR)
 	@echo "Resolving DOI $(DOI)..."
-	curl -sSL -o "$(SOURCES_DIR)/doi-$$(echo '$(DOI)' | tr '/' '_').pdf" \
-		-H "Accept: application/pdf" \
-		"https://doi.org/$(DOI)"
-	@echo "Saved to $(SOURCES_DIR)/"
+	@OUT="$(SOURCES_DIR)/doi-$$(echo '$(DOI)' | tr '/' '_').pdf"; \
+	curl -sSL -o "$$OUT" -H "Accept: application/pdf" "https://doi.org/$(DOI)"; \
+	if file "$$OUT" | grep -q "PDF document"; then \
+		echo "Saved to $$OUT"; \
+	else \
+		rm -f "$$OUT"; \
+		echo "The publisher did not serve a PDF for this DOI (likely paywalled)."; \
+		echo "Try: an arXiv/preprint version (make fetch-arxiv), the author's website,"; \
+		echo "or institutional library access."; \
+		exit 1; \
+	fi
 
 # ==============================================================================
 # PDF PROCESSING
@@ -128,9 +135,15 @@ identify-doi: ## Extract DOI from PDF. Usage: make identify-doi PDF="sources/pap
 # ==============================================================================
 
 .PHONY: verify
-verify: ## Check citation support/contradiction via scite-cli. Usage: make verify DOI="10.1234/example"
+verify: ## Check citation support/contradiction via scite-cli (optional; needs a scite.ai subscription). Usage: make verify DOI="10.1234/example"
 	@if [ -z "$(DOI)" ]; then \
 		echo "Error: DOI is required. Usage: make verify DOI=\"10.1234/example\""; \
+		exit 1; \
+	fi
+	@if ! command -v scite-cli >/dev/null 2>&1; then \
+		echo "scite-cli is not installed (optional tool; requires a scite.ai subscription)."; \
+		echo "Install: git clone https://github.com/scitedotai/scite-cli && cd scite-cli && npm install && npm link"; \
+		echo "Alternative: check the paper's citations manually on https://scite.ai"; \
 		exit 1; \
 	fi
 	scite-cli "$(DOI)"
@@ -183,33 +196,7 @@ new-note: ## Create reading note from template. Usage: make new-note TITLE="Pape
 		echo "Error: TITLE is required. Usage: make new-note TITLE=\"Paper Title\""; \
 		exit 1; \
 	fi
-	@mkdir -p $(NOTES_DIR)
-	$(eval SLUG := $(shell echo "$(TITLE)" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-'))
-	$(eval NOTE_FILE := $(NOTES_DIR)/$(shell date +%Y-%m-%d)-$(SLUG).md)
-	@if [ -f "$(NOTE_FILE)" ]; then \
-		echo "Note already exists: $(NOTE_FILE)"; \
-		exit 1; \
-	fi
-	@echo "---"                          >  $(NOTE_FILE)
-	@echo "title: \"$(TITLE)\""          >> $(NOTE_FILE)
-	@echo "date: $$(date +%Y-%m-%d)"     >> $(NOTE_FILE)
-	@echo "tags: []"                      >> $(NOTE_FILE)
-	@echo "doi: \"\""                     >> $(NOTE_FILE)
-	@echo "---"                          >> $(NOTE_FILE)
-	@echo ""                             >> $(NOTE_FILE)
-	@echo "## Summary"                   >> $(NOTE_FILE)
-	@echo ""                             >> $(NOTE_FILE)
-	@echo "## Key Findings"              >> $(NOTE_FILE)
-	@echo ""                             >> $(NOTE_FILE)
-	@echo "## Methodology"               >> $(NOTE_FILE)
-	@echo ""                             >> $(NOTE_FILE)
-	@echo "## Relevance to This Work"    >> $(NOTE_FILE)
-	@echo ""                             >> $(NOTE_FILE)
-	@echo "## Questions & Follow-ups"    >> $(NOTE_FILE)
-	@echo ""                             >> $(NOTE_FILE)
-	@echo "## Quotes"                    >> $(NOTE_FILE)
-	@echo ""                             >> $(NOTE_FILE)
-	@echo "Created note: $(NOTE_FILE)"
+	@scripts/new-note.sh "$(TITLE)"
 
 .PHONY: search-notes
 search-notes: ## Search notes. Usage: make search-notes QUERY="keyword"
@@ -232,7 +219,13 @@ lint: ## Lint prose with Vale. Usage: make lint [FILE="manuscript/main.md"]
 	@vale $(or $(FILE),$(MANUSCRIPT))
 
 .PHONY: grammar
-grammar: ## Check grammar with LanguageTool. Usage: make grammar [FILE="manuscript/main.md"]
+grammar: ## Check grammar with LanguageTool (optional; heavy install). Usage: make grammar [FILE="manuscript/main.md"]
+	@if ! command -v languagetool >/dev/null 2>&1; then \
+		echo "LanguageTool is not installed (optional tool; pulls in a Java runtime)."; \
+		echo "Install: brew install languagetool   (Mac)"; \
+		echo "'make lint' (Vale) covers style; LanguageTool adds grammar/spelling."; \
+		exit 1; \
+	fi
 	@languagetool $(or $(FILE),$(MANUSCRIPT))
 
 .PHONY: readability
@@ -323,10 +316,14 @@ diff: ## Compare two manuscript versions (track-changes PDF). Usage: make diff O
 		exit 1; \
 	fi
 	@mkdir -p $(OUTPUT_DIR)
-	pandoc $(OLD) -o /tmp/scaffold-old.tex
-	pandoc $(NEW) -o /tmp/scaffold-new.tex
+	pandoc $(OLD) -s -o /tmp/scaffold-old.tex
+	pandoc $(NEW) -s -o /tmp/scaffold-new.tex
 	latexdiff /tmp/scaffold-old.tex /tmp/scaffold-new.tex > /tmp/scaffold-diff.tex
-	pdflatex -output-directory=$(OUTPUT_DIR) /tmp/scaffold-diff.tex
+	@if command -v tectonic >/dev/null 2>&1; then \
+		tectonic --outdir $(OUTPUT_DIR) /tmp/scaffold-diff.tex; \
+	else \
+		pdflatex -output-directory=$(OUTPUT_DIR) /tmp/scaffold-diff.tex; \
+	fi
 	@echo "Built: $(OUTPUT_DIR)/scaffold-diff.pdf"
 
 # ==============================================================================

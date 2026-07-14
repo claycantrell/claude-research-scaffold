@@ -10,7 +10,6 @@ set -euo pipefail
 # ─────────────────────────────────────────────────────────────────────────────
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SCITE_CLI_DIR="${HOME}/.local/share/scite-cli"
 
 # ── Colours & helpers ────────────────────────────────────────────────────────
 
@@ -75,10 +74,7 @@ install_system_deps() {
         brew_install poppler       # provides pdftotext
         brew_install pandoc
         brew_install tectonic      # self-contained LaTeX engine for PDF builds
-        brew_install nb
-        brew_install zk
         brew_install vale
-        brew_install languagetool
         brew_install pandoc-crossref
         brew_install gnuplot
         brew_install diction
@@ -104,30 +100,6 @@ install_system_deps() {
             fi
         else
             ok "tectonic already installed"
-        fi
-
-        # nb (xwmx/tui notebook)
-        if ! command -v nb &>/dev/null; then
-            info "Installing nb via brew (linuxbrew)..."
-            if command -v brew &>/dev/null; then
-                brew_install nb
-            else
-                warn "brew not available on this Linux system — install nb manually: https://xwmx.github.io/nb/"
-            fi
-        else
-            ok "nb already installed"
-        fi
-
-        # zk (zettelkasten CLI)
-        if ! command -v zk &>/dev/null; then
-            info "Installing zk via brew (linuxbrew)..."
-            if command -v brew &>/dev/null; then
-                brew_install zk
-            else
-                warn "brew not available on this Linux system — install zk manually: https://github.com/zk-org/zk"
-            fi
-        else
-            ok "zk already installed"
         fi
 
         # vale (prose linter)
@@ -180,28 +152,6 @@ install_python_deps() {
     pip install --quiet --upgrade -r "${SCRIPT_DIR}/requirements.txt"
     ok "requirements.txt installed"
 
-}
-
-# ── Install scite-cli (Node-based) ──────────────────────────────────────────
-
-install_scite_cli() {
-    header "scite-cli (Node)"
-
-    if [[ -d "$SCITE_CLI_DIR" ]]; then
-        info "scite-cli directory already exists, updating..."
-        git -C "$SCITE_CLI_DIR" pull --ff-only || warn "git pull failed — continuing with existing checkout"
-    else
-        info "Cloning scite-cli..."
-        git clone https://github.com/scitedotai/scite-cli.git "$SCITE_CLI_DIR"
-    fi
-
-    info "Running npm install..."
-    (cd "$SCITE_CLI_DIR" && npm install --silent)
-
-    info "Running npm link..."
-    (cd "$SCITE_CLI_DIR" && npm link --silent 2>/dev/null) || warn "npm link failed (may need sudo on Linux)"
-
-    ok "scite-cli set up at ${SCITE_CLI_DIR}"
 }
 
 # ── Install Node-based tools ─────────────────────────────────────────────────
@@ -260,30 +210,23 @@ validate_tools() {
     check_tool "pdftotext"      "pdftotext -v"
     check_tool "pandoc"         "pandoc --version"
 
-    # Brew-based tools
-    check_tool "nb"             "nb --version"
-    check_tool "zk"             "zk --version"
-
     # Python tools
     check_tool "semantic_bibtool"  "python3 -c 'import semantic_bibtool'"
     check_tool "semanticscholar"   "python3 -c 'import semanticscholar'"
-    check_tool "arxiv-dl"          "command -v arxiv-dl || python3 -c 'import arxiv_dl'"
-    check_tool "doi2pdf"           "command -v doi2pdf || python3 -c 'import doi2pdf'"
-    check_tool "pdf2doi"           "command -v pdf2doi || python3 -c 'import pdf2doi'"
-    check_tool "pdfminer"         "python3 -c 'import pdfminer'"
     check_tool "papis"            "papis --version"
 
     # Prose & writing tools
     check_tool "vale"             "vale --version"
-    check_tool "languagetool"     "command -v languagetool"
     check_tool "pandoc-crossref"  "pandoc-crossref --version"
     check_tool "gnuplot"          "gnuplot --version"
     check_tool "style (diction)"  "command -v style"
     check_tool "latexdiff"        "latexdiff --version"
 
     # Node-based tools
-    check_tool "scite-cli"        "command -v scite"
     check_tool "mmdc (mermaid)"   "mmdc --version"
+
+    # Optional (not installed by setup — targets degrade gracefully)
+    check_tool "tectonic"         "tectonic --version"
 }
 
 print_summary() {
@@ -324,13 +267,9 @@ print_next_steps() {
 2. Configure papis (reference manager):
      papis init
 
-3. Initialise nb and zk notebooks:
-     nb init
-     zk init
-
-4. Try a quick smoke test:
-     semanticscholar search "cognitive augmentation"
-     papis add --from doi 10.1145/3411764.3445243
+3. Try a quick smoke test:
+     make search-py QUERY="cognitive augmentation"
+     make pdf
 NEXT
 }
 
@@ -343,7 +282,6 @@ main() {
     detect_platform
     install_system_deps
     install_python_deps
-    install_scite_cli
     install_node_tools
     setup_env_file
     validate_tools
