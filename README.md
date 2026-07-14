@@ -146,7 +146,7 @@ This works because five files in your project act as Claude's memory:
 - **`decisions.md`** — choices you've made along the way (scope, style, focus areas)
 - **`drafts/writing-plan.md`** — section-by-section drafting instructions with word budgets and discipline notes (created once the outline is stable)
 
-Claude updates these automatically as you work. You don't need to touch them — but you can look at them anytime to see the state of your project at a glance.
+Claude updates these automatically as you work — including flushing important context to them *during* long sessions, so nothing is lost if a conversation gets summarized. Retired material (finished searches, superseded decisions) moves to `archive.md` to keep the active files quick to read. You don't need to touch any of them — but you can look anytime to see the state of your project at a glance.
 
 ---
 
@@ -213,6 +213,7 @@ Once Claude Code is running inside this project, you can say things like:
 | `output/` | The finished product — PDF, Word doc, etc. | Your printer tray |
 | `templates/` | Pre-made forms for notes and drafts | Your blank index cards |
 | `docs/` | Detailed instructions for each tool | Your reference manual |
+| `.claude/skills/` | Claude's playbooks for each kind of work (searching, drafting, submitting) — loaded only when needed, so conversations stay fast | Your assistant's procedure binder |
 
 ---
 

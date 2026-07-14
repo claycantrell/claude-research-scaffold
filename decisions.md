@@ -5,6 +5,9 @@
 No decisions recorded yet. As you work with Claude, this file will track things like:
 - Your chosen research focus and scope
 - Citation style preferences
-- Target length and venue
-- Sections you've decided to include or exclude
+- Target length and venue (and any changes to them)
+- Sections, experiments, or datasets you've decided to include or exclude
 - Key arguments or framings you've committed to
+- Approaches you tried and ruled out
+
+Superseded decisions get struck through and, once stale, moved to archive.md — never silently deleted.
