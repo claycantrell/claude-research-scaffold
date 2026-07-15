@@ -4,7 +4,7 @@
 
 You talk to an AI assistant in plain English. It finds papers, downloads them, organizes your sources, manages citations, writes with you, and produces a finished document. You focus on the ideas — Claude handles the tedium.
 
-Everything here is **free** and runs on your computer. Your research stays yours.
+All the research tools are **free** and run on your computer (Claude itself is the one paid piece — see "It costs money" below). Your research stays yours.
 
 ---
 
@@ -365,8 +365,8 @@ Everything Claude does under the hood uses `make` commands. If you prefer to run
 ### Finding Papers
 | What you want to do | Command |
 |---------------------|---------|
-| Search Semantic Scholar | `make search QUERY="your topic"` |
-| Deeper search with citation counts | `make search-py QUERY="your topic"` |
+| Search Semantic Scholar (readable results, citation counts) | `make search-py QUERY="your topic"` |
+| Search Semantic Scholar (BibTeX output for the bibliography) | `make search QUERY="your topic"` |
 | Search OpenAlex (250M+ papers) | `make search-openalex QUERY="your topic"` |
 | Find papers by a specific author | `make search-author AUTHOR="Jane Smith"` |
 
@@ -386,7 +386,7 @@ Everything Claude does under the hood uses `make` commands. If you prefer to run
 ### Verifying
 | What you want to do | Command |
 |---------------------|---------|
-| Check citation support/contradiction | `make verify DOI="10.1038/s41586-020-2649-2"` |
+| Check citation support/contradiction (optional; needs scite.ai) | `make verify DOI="10.1038/s41586-020-2649-2"` |
 | Verify your whole bibliography against the published record | `make verify-bib` |
 
 ### Organizing Sources
